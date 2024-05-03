@@ -33,8 +33,7 @@ class Board{
 		for(int i=0; i<width*height; i++)
 			{
 				Tile * t = new Tile;
-				t->player = -1;
-				for(int j=0; j<4; j++) t->walls[j]=false;
+        		t->walls.resize(4,false);
 				board[i] = t;
 			}
 	}

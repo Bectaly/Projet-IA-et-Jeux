@@ -30,7 +30,7 @@ Item * new_item(int largeur, int hauteur){
 int main()
 { 
   
-  Game g(10,5);
+  Game g(9,9);
   while(g.event()){g.display();}
   return 0;
 }

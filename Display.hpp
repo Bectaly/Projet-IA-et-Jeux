@@ -25,7 +25,7 @@ class Game{
         int largeur,hauteur;
 
     public:
-        Game(int largeur=5,int hauteur=10);
+        Game(int largeur,int hauteur);
         int event();
         void display();
 };
