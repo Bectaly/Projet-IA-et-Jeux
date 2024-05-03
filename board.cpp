@@ -17,13 +17,24 @@ Board createBoard(int w, int h)
 
 Item * initGame()
 {
-     int i;
+  int x=w;
+  int y=h;
+  int size= w*h;
+  int i;
   Item *node;
-
-	char *initial = (char*)malloc(MAX_BOARD*sizeof(char));
-	for (int i=0; i<MAX_BOARD; i++) initial[i] = 0;
-    node = nodeAlloc();
-	initBoard(node, initial);
+//initialise le vecteur 
+  Board initial ();
+  for (int i=0; i<MAX_BOARD; i++) 
+  {
+	initial[i] = 0;
+  }
+  y=
+  for (id=0; id<2; id=id+1)
+  {
+	  initial->set(x*id,y,id+1);
+  }
+  node = nodeAlloc();
+  initBoard(node, initial);
   node->depth = 0;
   return node;
 }
@@ -64,6 +75,7 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
     {
          /* allocate and init child node */
         child_p=new_item();
+	initiBoard (child_p, node->board);
         /* Make move */
         child_p->parent=node;
     	child_p->depth=node->depth+1;
