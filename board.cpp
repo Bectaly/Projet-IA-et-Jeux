@@ -5,22 +5,22 @@
 Item * initBoard (Item * node, Board board) 
 {
   assert( node );
-  for(int i=0;i<(node->board->width * node->board->height);i++)
+  for(int i=0;i<(WIDTH * HEIGHT);i++)
   {
     	node->board[i]=board[i];
   }
 }
 
-Item * initGame(int w, int h)
+Item * initGame()
 {
-  int x=w;
-  int y=h;
-  int size= w*h;
+  int x=WIDTH;
+  int y=HEIGHT;
+  int size= x*y;
   int i;
   Item *node;
 //initialise le vecteur 
   Board initial ();
-  for (int i=0; i<MAX_BOARD; i++) 
+  for (int i=0; i<size; i++) 
   {
 	initial[i] = 0;
   }
@@ -48,9 +48,9 @@ double evaluateBoard(Item * node)
     int id;
     for (id=0; id<2; id=id+1)
     {
-        for (j=0; j<node->board->width; j=j+1)
+        for (j=0; j<WIDTH; j=j+1)
         {
-           if ((node->board).getPlayerPosition (id) == node->board[id*node->board->height][j])
+           if ((node->board).getPlayerPosition (id) == node->board[j][id*HEIGHT])
            {
                cout << "Le joueur " << id << endl;
                return 1;
