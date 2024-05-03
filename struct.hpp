@@ -22,6 +22,27 @@ typedef struct _tile {
 	vector<bool> walls;
 } Tile;
 
+class player: public sf::Drawable{
+	private:
+		int id;
+		sf::Sprite sprite;
+        sf::Texture texture;
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
+            target.draw(sprite, states);
+        }
+	public:
+		int x,y;
+		void set_id(int id){this->id=id;}
+		int get_id(){return id;}
+		void set_sprite(string name){
+			if (!texture.loadFromFile(name))cout<<"erreur de chargement"<<endl;
+			else sprite.setTexture(texture);
+		}
+		
+
+
+};
+
 class Board{
   	private:
     vector<Tile *> board;
