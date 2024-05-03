@@ -36,18 +36,6 @@ class Board{
 			}
 	}
 
-   	Board copy(Board * b) { // Crée une copie d'un board d'après son adresse
-		
-		int w = getBoardW();
-		int h = getBoardH();
-		
-		Board bb = Board(w, h);
-		for(int i=0; i<w*h; i++) bb[i] = *(b+i);
-
-		return bb;
-	}
-		
-
 	int getPlayerPosition(int id) { // Donne la position d'un joueur d'après son ID (0 ou 1)
 		for(int i=0; i<width; i++)
 			{
@@ -113,6 +101,3 @@ typedef struct Item_s {
 } Item;
 
 #endif
-
-hgfjhgfjgf
-znoubi
