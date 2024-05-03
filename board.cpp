@@ -2,20 +2,16 @@
 #include <iostream>
 #include "board.h"
 
-Board createBoard(int w, int h)
+Item * initBoard (Item * node, Board board) 
 {
-    assert
-    int size = w*h;
-    int * board = malloc(size*sizeof(int));
-
-    int i;
-    for(i=0; i<size; i++)
-    {
-        board[i] = 0;
-    }
+  assert( node );
+  for(int i=0;i<(node->board->width * node->board->height);i++)
+  {
+    	node->board[i]=board[i];
+  }
 }
 
-Item * initGame()
+Item * initGame(int w, int h)
 {
   int x=w;
   int y=h;
@@ -33,11 +29,10 @@ Item * initGame()
   {
 	  initial->set(x,y*id,id+1);
   }
-  node = nodeAlloc();
+  node = new_item();
   initBoard(node, initial);
   node->depth = 0;
   return node;
-}
 }
 
 
