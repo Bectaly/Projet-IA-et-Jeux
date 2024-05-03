@@ -1,5 +1,5 @@
-#ifndef _List_H_
-#define _List_H_
+#ifndef _LIST_H_
+#define _LIST_H_
 
 #include "struct.hpp"
 
