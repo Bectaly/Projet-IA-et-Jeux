@@ -71,27 +71,18 @@ class Board{
 		else if(bit==2 && getTile(x, y+1)->player!=-1) return false;
 		else if(bit==3 && getTile(x-1, y)->player!=-1) return false;
 
-		return getTile(x, y)->walls[bit];
+		return !(getTile(x, y)->walls[bit]);
 	}
 
 	vector<int> possibleMoves(int x, int y) { // Renvoie un vecteur contenant les bits de direction possibles pour un mouvement depuis (x,y)
 		vector<int> moves;
-		int k=0;
-
+		int k = 1;
+		
 		for(int bit=0; bit<4; bit++) {
 			if(isMovePossible(x, y, bit)) {
+				moves.resize(k);
+				vector[k-1] = bit;
 				k++;
-			}
-		}
-
-		moves.resize(k);
-
-		int kk = 0;
-
-		for(int bit=0; bit<4; bit++) {
-			if(isMovePossible(x, y, bit)) {
-				vector[kk] = bit;
-				kk++;
 			}
 		}
 
