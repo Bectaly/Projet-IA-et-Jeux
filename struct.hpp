@@ -24,31 +24,29 @@ typedef struct _tile {
 
 class Board{
   	private:
-    	vector<Tile *> board;
+    vector<Tile *> board;
 
 	public:
-    	int width, height;
+    int width, height;
 	Board(int width = WIDTH, int height = HEIGHT) { // Initialise un board vide, de dimension WIDTH*HEIGHT
-      		this->width = width;
-      		this->height = height;
-      		board.resize(width*height);
+      	this->width = width;
+    	this->height = height;
+  		board.resize(width*height);
 		for(int i=0; i<width*height; i++)
-			{
-				Tile * t = new Tile;
-				t->player = -1;
-				for(int j=0; j<4; j++) t->walls[j]=false;
-				board[i] = t;
-			}
+		{
+			Tile * t = new Tile;
+			t->player = -1;
+			for(int j=0; j<4; j++) t->walls[j]=false;
+			board[i] = t;
+		}
 	}
 
 	int getPlayerPosition(int id) { // Donne la position d'un joueur d'après son ID (0 ou 1)
-		for(int i=0; i<width; i++)
-			{
-				for(int j=0; j<height; j++)
-					{
-						if (getTile(i,j)->player == id) return j*width+i;
-					}
+		for(int i=0; i<width; i++) {
+			for(int j=0; j<height; j++) {
+				if (getTile(i,j)->player == id) return j*width+i;
 			}
+		}
 	}
 
 	int getBoardW() {return width;} // Renvoie la largeur du board
@@ -90,7 +88,7 @@ class Board{
 		setTile(x, y, t);
 	}
 
-    	Tile * getTile(int x, int y) {return board[y*width+x];} // Renvoie le pointeur de la tile placée en (x,y)
+    Tile * getTile(int x, int y) {return board[y*width+x];} // Renvoie le pointeur de la tile placée en (x,y)
 };
 
 struct Item_s;
