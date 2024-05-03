@@ -13,11 +13,8 @@
 using namespace std;
 
 typedef struct _tile {
-	int Joueur = 0;
-	bool up = false;
-  	bool right = false;
-  	bool down = false;
-  	bool left = false;
+	int player = 0;
+	vector<bool> walls;
 } Tile;
 
 class Board{
@@ -25,18 +22,74 @@ class Board{
     	vector<Tile *> board;
 
 	public:
-    	int largeur, hauteur;
-	Board(int largeur = 5, int hauteur = 5)
+    	int width, height;
+	Board(int width = 5, int height = 5)
 	{
-      		this->largeur = largeur;
-      		this->hauteur = hauteur;
-      		board.resize(largeur*hauteur, new Box);
+      		this->width = width;
+      		this->height = height;
+      		board.resize(width*height);
+		for(int i=0; i<width*height; i++)
+			{
+				Tile * t = new Tile;
+				for(int j=0; j<4; j++) t[j]=false;
+				board[i] = t;
+			}
 	}
-hugvuhfc
+
    	//Board copy(Board * b)
 
-    	void setTile(int x, int y, Box * b){board[y*hauteur+x] = b;}
-    	Box * getTile(int x, int y){return board[y*hauteur+x];}
+	int getPlayerPosition(int id)
+	{
+		for(int i=0; i<width; i++)
+			{
+				for(int j=0; j<height; j++)
+					{
+						if (getTile(i,j)->player == id) return j*width+i;
+					}
+			}
+	}
+
+	int getBoardW() {return width;}
+	int getBoardH() {return height;}
+
+	bool isMovePossible(int x, int y, int bit)
+	{
+		bool b = false;
+		
+		if(bit==0 && y==0) b=true;
+		else if (bit==1 && x==width) b=true;
+		else if (bit==2 && y==height) b=true;
+		else if (bit==3 && x==0) b=true;
+		
+		if(b)
+		{
+			cout << "error in isMovePossible: target out of board" << endl;
+			return false;
+		}
+
+		return getTile(x, y)->walls[bit];
+	}
+		
+		
+
+	void setTile(int x, int y, Tile * t)
+	{
+		board[y*width+x]=t;
+	}		
+
+	void addOneWall(int x, int y, int bit)
+	{
+		Tile * t = getTile(x, y);
+
+		if (bit==0) t.up=true;
+		else if (bit==1) t.right=true;
+		else if (bit==2) t.down=true;
+		else if (bit==3) t.left=true;
+
+		setTile(x, y, t);
+	}
+
+    	Tile * getTile(int x, int y){return board[y*width+x];}
 };
 
 struct Item_s;
