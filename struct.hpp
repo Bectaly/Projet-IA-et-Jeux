@@ -42,10 +42,10 @@ class Board{
 struct Item_s;
 
 typedef struct Item_s {
-  Board * board;
-  float f, g, h;
-  int depth;
-  struct Item_s * parent; 
+	Board * board;
+ 	float f, g, h;
+  	int depth;
+  	struct Item_s * parent; 
 } Item;
 
 #endif
