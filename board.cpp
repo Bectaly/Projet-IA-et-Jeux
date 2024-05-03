@@ -60,7 +60,7 @@ double evaluateBoard(Item * node)
 
 isValid_Wall (Item *node, int x, int y, int bit)
 {
-	
+	//verifions s'il est possible de poser un mur à cet emplacement 
 }
 
 

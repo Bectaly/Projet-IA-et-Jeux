@@ -27,6 +27,43 @@ Item * new_item(int largeur, int hauteur){
   return i;
 }
 
+std::vector<Item*> astar(int x, int y, int id) {
+    std::vector<Item*> reachableNodes;
+    Item *cur_node, *child_p, *temp;
+
+    while (listCount(&openList_p) != 0) { 
+        /* Get the first item on the open list */
+        cur_node = popBest(&openList_p);
+
+        /* Add current node to reachable nodes */
+        reachableNodes.push_back(cur_node);
+
+        if (onList(&closedList_p, cur_node->board) == NULL) {
+            addFirst(&closedList_p, cur_node);
+            for (int i = 0; i < MAX_BOARD; i++) {
+                child_p = getChildBoard(cur_node, i);
+                if (child_p != NULL && onList(&closedList_p, child_p->board) == NULL) {
+                    if (onList(&openList_p, child_p->board) == NULL) {
+                        child_p->h = getSimpleHeuristic(child_p);
+                        child_p->g = child_p->depth;
+                        child_p->f = child_p->g + child_p->h;
+                        addFirst(&openList_p, child_p);
+                    }
+                    else {
+                        temp = onList(&openList_p, child_p->board);
+                        if (temp->f > child_p->f) {
+                            addFirst(&openList_p, child_p);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return reachableNodes;
+}
+
+
 int main()
 { 
   
