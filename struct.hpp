@@ -10,8 +10,8 @@
 #include <vector>
 #include <random>
 
-#define BOARD_WIDTH 5
-#define BOARD_HEIGHT 5
+#define WIDTH 5
+#define HEIGHT 5
 
 using namespace std;
 
