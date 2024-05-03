@@ -86,8 +86,4 @@ class List{
             cout<<" ]"<<endl;
         }
 };
-#endif 
-
-
-groszeubmechant
-hahaha
+#endif
