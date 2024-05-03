@@ -13,7 +13,7 @@
 using namespace std;
 
 typedef struct _tile {
-	int player = 0;
+	int player = -1;
 	vector<bool> walls;
 } Tile;
 
@@ -75,6 +75,11 @@ class Board{
 		}
 
 		return getTile(x, y)->walls[bit];
+	}
+
+	int getTileId(int x, int y) {
+		Tile * t = getTile(x, y);
+		return t->player;
 	}
 		
 		
