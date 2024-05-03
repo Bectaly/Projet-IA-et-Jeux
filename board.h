@@ -24,6 +24,4 @@ void movePlayer(Board board, int id, int bit)
 
 void getTileData(Board board, int x, int y)
 
-zboubideluxe
-
 #endif
