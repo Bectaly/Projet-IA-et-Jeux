@@ -32,15 +32,13 @@ class player: public sf::Drawable{
         }
 	public:
 		int x,y;
+		void set_coord(int x,int y){this->x=x;this->y=y;}
 		void set_id(int id){this->id=id;}
 		int get_id(){return id;}
 		void set_sprite(string name){
-			if (!texture.loadFromFile(name))cout<<"erreur de chargement"<<endl;
+			if (!texture.loadFromFile(name))cout<<"error de chargement du joueur"<<endl;
 			else sprite.setTexture(texture);
 		}
-		
-
-
 };
 
 class Board{
