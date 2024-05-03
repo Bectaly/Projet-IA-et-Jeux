@@ -33,19 +33,11 @@ class Board{
     	this->height = height;
   		board.resize(width*height);
 		for(int i=0; i<width*height; i++)
-<<<<<<< HEAD
-			{
-				Tile * t = new Tile;
-        		t->walls.resize(4,false);
-				board[i] = t;
-			}
-=======
 		{
 			Tile * t = new Tile;
 			t->walls.resize(4, false);
 			board[i] = t;
 		}
->>>>>>> 597d641c8cf4677d359454b317570304d6b86392
 	}
 
 	int getPlayerPosition(int id) { // Donne la position d'un joueur d'après son ID (0 ou 1)
