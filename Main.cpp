@@ -1,2 +1,0 @@
-
-cout << "tomte" << endl;
