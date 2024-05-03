@@ -10,6 +10,9 @@
 #include <vector>
 #include <random>
 
+#define BOARD_WIDTH 5
+#define BOARD_HEIGHT 5
+
 using namespace std;
 
 typedef struct _tile {
@@ -23,7 +26,7 @@ class Board{
 
 	public:
     	int width, height;
-	Board(int width = 5, int height = 5) { // Initialise un board vide, de dimension width*height
+	Board(int width = BOARD_WIDTH, int height = BOARD_HEIGHT) { // Initialise un board vide, de dimension width*height
       		this->width = width;
       		this->height = height;
       		board.resize(width*height);
