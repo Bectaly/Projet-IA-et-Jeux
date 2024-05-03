@@ -34,4 +34,3 @@ int main()
   while(g.event()){g.display();}
   return 0;
 }
-printBoard();
