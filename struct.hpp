@@ -13,6 +13,8 @@
 #define WIDTH 5
 #define HEIGHT 5
 
+#define WALL_INIT 2*(2*WIDTH*HEIGHT - WIDTH - HEIGHT)
+
 using namespace std;
 
 typedef struct _tile {
