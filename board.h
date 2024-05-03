@@ -27,6 +27,3 @@ void getTileData(Board board, int x, int y)
 zboubideluxe
 
 #endif
-
-atyzfyaztdayz
-sefzefzef
