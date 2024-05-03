@@ -30,6 +30,7 @@ class Board{
 		for(int i=0; i<width*height; i++)
 			{
 				Tile * t = new Tile;
+				t->player = -1;
 				for(int j=0; j<4; j++) t[j]=false;
 				board[i] = t;
 			}
