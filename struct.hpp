@@ -13,34 +13,41 @@
 using namespace std;
 
 
-typedef struct _box {
-  int Joueur=0;
-  int wall=0;
-} Box;
+typedef struct _tile {
+  int Joueur = 0;
+  bool up = false;
+  bool right = false;
+  bool down = false;
+  bool left = false;
+} Tile;
 
 class Board{
   private:
-    vector<Box*> board;
+    vector<Tile *> board;
   public:
-    int largeur,hauteur;
-    Board(int largeur=5, int hauteur=5){
-      this->largeur=largeur;
-      this->hauteur=hauteur;
-      board.resize(largeur*hauteur,new Box);
+    int largeur, hauteur;
+
+    Board(int largeur = 5, int hauteur = 5)
+		{
+      this->largeur = largeur;
+      this->hauteur = hauteur;
+      board.resize(largeur*hauteur, new Box);
     }
+
     //copy(Board* b);
-    void set(int x, int y,Box * b){board[y*hauteur+x]=b;}
-    Box* get(int x, int y){return board[y*hauteur+x];}
+
+    void setTile(int x, int y, Box * b){board[y*hauteur+x] = b;}
+    Box * getTile(int x, int y){return board[y*hauteur+x];}
 };
 
 
 struct Item_s;
 
 typedef struct Item_s {
-  Board *board;
+  Board * board;
   float f, g, h;
   int depth;
-  struct Item_s *parent; 
+  struct Item_s * parent; 
 } Item;
 
 
