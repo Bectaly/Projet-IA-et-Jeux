@@ -33,7 +33,7 @@ class Board{
       		board.resize(largeur*hauteur, new Box);
 	}
 
-   	//copy(Board* b);
+   	//Board copy(Board * b)
 
     	void setTile(int x, int y, Box * b){board[y*hauteur+x] = b;}
     	Box * getTile(int x, int y){return board[y*hauteur+x];}
