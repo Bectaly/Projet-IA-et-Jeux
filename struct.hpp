@@ -31,7 +31,7 @@ class Board{
 			{
 				Tile * t = new Tile;
 				t->player = -1;
-				for(int j=0; j<4; j++) t[j]=false;
+				for(int j=0; j<4; j++) t->walls[j]=false;
 				board[i] = t;
 			}
 	}
