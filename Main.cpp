@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 #include "Display.hpp"
 
 void printBoard(Item * i){
@@ -36,4 +34,4 @@ int main()
   while(g.event()){g.display();}
   return 0;
 }
->>>>>>> 93f244844fce225aadcd1e2d524f6db93abcc36e
+printBoard();
