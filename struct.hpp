@@ -55,7 +55,7 @@ class Board{
 	bool isMovePossible(int x, int y, int bit) { // Renvoie si le move dirigé par le bit est possible depuis (x,y)
 		bool b = false;
 		
-		if(bit==0 && y==0) b=true;
+		if(bit==0 && y==0) b=true; // La case ciblée est-elle en dehors du board ?
 		else if (bit==1 && x==width) b=true;
 		else if (bit==2 && y==height) b=true;
 		else if (bit==3 && x==0) b=true;
@@ -66,7 +66,7 @@ class Board{
 			return false;
 		}
 
-		if(bit==0 && getTile(x, y-1)->player!=-1) return false;
+		if(bit==0 && getTile(x, y-1)->player!=-1) return false; // La case ciblée est-elle occupée ?
 		else if(bit==1 && getTile(x+1, y)->player!=-1) return false;
 		else if(bit==2 && getTile(x, y+1)->player!=-1) return false;
 		else if(bit==3 && getTile(x-1, y)->player!=-1) return false;
