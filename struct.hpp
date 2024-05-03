@@ -23,8 +23,7 @@ class Board{
 
 	public:
     	int width, height;
-	Board(int width = 5, int height = 5)
-	{
+	Board(int width = 5, int height = 5) {
       		this->width = width;
       		this->height = height;
       		board.resize(width*height);
@@ -36,10 +35,19 @@ class Board{
 			}
 	}
 
-   	//Board copy(Board * b)
+   	Board copy(Board * b) {
+		
+		int w = getBoardW();
+		int h = getBoardH();
+		
+		Board bb = Board(w, h);
+		for(int i=0; i<w*h; i++) bb[i] = *(b+i);
 
-	int getPlayerPosition(int id)
-	{
+		return bb;
+	}
+		
+
+	int getPlayerPosition(int id) {
 		for(int i=0; i<width; i++)
 			{
 				for(int j=0; j<height; j++)
@@ -52,8 +60,7 @@ class Board{
 	int getBoardW() {return width;}
 	int getBoardH() {return height;}
 
-	bool isMovePossible(int x, int y, int bit)
-	{
+	bool isMovePossible(int x, int y, int bit) {
 		bool b = false;
 		
 		if(bit==0 && y==0) b=true;
@@ -72,13 +79,11 @@ class Board{
 		
 		
 
-	void setTile(int x, int y, Tile * t)
-	{
+	void setTile(int x, int y, Tile * t) {
 		board[y*width+x]=t;
 	}		
 
-	void addOneWall(int x, int y, int bit)
-	{
+	void addOneWall(int x, int y, int bit) {
 		Tile * t = getTile(x, y);
 
 		if (bit==0) t.up=true;
@@ -89,7 +94,7 @@ class Board{
 		setTile(x, y, t);
 	}
 
-    	Tile * getTile(int x, int y){return board[y*width+x];}
+    	Tile * getTile(int x, int y) {return board[y*width+x];}
 };
 
 struct Item_s;
