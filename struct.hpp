@@ -23,7 +23,7 @@ class Board{
 
 	public:
     	int width, height;
-	Board(int width = 5, int height = 5) {
+	Board(int width = 5, int height = 5) { // Initialise un board vide, de dimension width*height
       		this->width = width;
       		this->height = height;
       		board.resize(width*height);
@@ -35,7 +35,7 @@ class Board{
 			}
 	}
 
-   	Board copy(Board * b) {
+   	Board copy(Board * b) { // Crée une copie d'un board d'après son adresse
 		
 		int w = getBoardW();
 		int h = getBoardH();
@@ -47,7 +47,7 @@ class Board{
 	}
 		
 
-	int getPlayerPosition(int id) {
+	int getPlayerPosition(int id) { // Donne la position d'un joueur d'après son ID (0 ou 1)
 		for(int i=0; i<width; i++)
 			{
 				for(int j=0; j<height; j++)
@@ -57,10 +57,10 @@ class Board{
 			}
 	}
 
-	int getBoardW() {return width;}
-	int getBoardH() {return height;}
+	int getBoardW() {return width;} // Renvoie la largeur du board
+	int getBoardH() {return height;} // Renvoie la hauteur du board
 
-	bool isMovePossible(int x, int y, int bit) {
+	bool isMovePossible(int x, int y, int bit) { // Renvoie si la move dirigé par le bit est possible depuis (x,y)
 		bool b = false;
 		
 		if(bit==0 && y==0) b=true;
@@ -77,18 +77,18 @@ class Board{
 		return getTile(x, y)->walls[bit];
 	}
 
-	int getTileId(int x, int y) {
+	int getTileId(int x, int y) { // Renvoie le bit du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
 		Tile * t = getTile(x, y);
 		return t->player;
 	}
 		
 		
 
-	void setTile(int x, int y, Tile * t) {
+	void setTile(int x, int y, Tile * t) { // Change la tile (x,y) en la tile passée en argument
 		board[y*width+x]=t;
 	}		
 
-	void addOneWall(int x, int y, int bit) {
+	void addOneWall(int x, int y, int bit) { // Ajoute un mur sur UNE TILE
 		Tile * t = getTile(x, y);
 
 		if (bit==0) t.up=true;
@@ -99,7 +99,7 @@ class Board{
 		setTile(x, y, t);
 	}
 
-    	Tile * getTile(int x, int y) {return board[y*width+x];}
+    	Tile * getTile(int x, int y) {return board[y*width+x];} // Renvoie le pointeur de la tile placée en (x,y)
 };
 
 struct Item_s;
