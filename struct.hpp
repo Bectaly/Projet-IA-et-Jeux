@@ -27,15 +27,15 @@ class player: public sf::Drawable{
 		int id;
 		sf::Sprite sprite;
         sf::Texture texture;
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override {//pour faciliter le display 
             target.draw(sprite, states);
         }
 	public:
-		int x,y;
+		int x,y;//facile d'acces
 		void set_coord(int x,int y){this->x=x;this->y=y;}
 		void set_id(int id){this->id=id;}
 		int get_id(){return id;}
-		void set_sprite(string name){
+		void set_sprite(string name){//pour le skin
 			if (!texture.loadFromFile(name))cout<<"error de chargement du joueur"<<endl;
 			else sprite.setTexture(texture);
 		}
