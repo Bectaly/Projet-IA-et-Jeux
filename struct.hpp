@@ -83,10 +83,7 @@ class Board{
 	void addOneWall(int x, int y, int bit) { // Ajoute un mur sur UNE TILE
 		Tile * t = getTile(x, y);
 
-		if (bit==0) t.up=true;
-		else if (bit==1) t.right=true;
-		else if (bit==2) t.down=true;
-		else if (bit==3) t.left=true;
+		t->walls[bit]=true;
 
 		setTile(x, y, t);
 	}
