@@ -35,8 +35,7 @@ class Board{
 		for(int i=0; i<width*height; i++)
 		{
 			Tile * t = new Tile;
-			t->player = -1;
-			for(int j=0; j<4; j++) t->walls[j]=false;
+			t->walls.resize(4, false);
 			board[i] = t;
 		}
 	}
@@ -50,6 +49,7 @@ class Board{
 	}
 
 	int getBoardW() {return width;} // Renvoie la largeur du board
+
 	int getBoardH() {return height;} // Renvoie la hauteur du board
 
 	bool isMovePossible(int x, int y, int bit) { // Renvoie si la move dirigé par le bit est possible depuis (x,y)
@@ -72,9 +72,7 @@ class Board{
 	int getTileId(int x, int y) { // Renvoie le bit du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
 		Tile * t = getTile(x, y);
 		return t->player;
-	}
-		
-		
+	}		
 
 	void setTile(int x, int y, Tile * t) { // Change la tile (x,y) en la tile passée en argument
 		board[y*width+x]=t;
@@ -86,6 +84,15 @@ class Board{
 		t->walls[bit]=true;
 
 		setTile(x, y, t);
+	}
+
+	void addWall(int x, int y, int bit) { // Ajoute le mur sur les DEUX TILES mitoyennes concernées
+		addOneWall(x, y, bit);
+
+		if (bit==0) addOneWall(x, y-1, 2);
+		else if (bit==1) addOneWall(x+1, y, 3);
+		else if (bit==2) addOneWall(x, y+1, 0);
+		else if (bit==3) addOneWall(x-1, y, 1);
 	}
 
     Tile * getTile(int x, int y) {return board[y*width+x];} // Renvoie le pointeur de la tile placée en (x,y)
