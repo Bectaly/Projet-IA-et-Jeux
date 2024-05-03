@@ -52,7 +52,7 @@ class Board{
 
 	int getBoardH() {return height;} // Renvoie la hauteur du board
 
-	bool isMovePossible(int x, int y, int bit) { // Renvoie si la move dirigé par le bit est possible depuis (x,y)
+	bool isMovePossible(int x, int y, int bit) { // Renvoie si le move dirigé par le bit est possible depuis (x,y)
 		bool b = false;
 		
 		if(bit==0 && y==0) b=true;
@@ -65,6 +65,11 @@ class Board{
 			cout << "error in isMovePossible: target out of board" << endl;
 			return false;
 		}
+
+		if(bit==0 && getTile(x, y-1)->player!=-1) return false;
+		else if(bit==1 && getTile(x+1, y)->player!=-1) return false;
+		else if(bit==2 && getTile(x, y+1)->player!=-1) return false;
+		else if(bit==3 && getTile(x-1, y)->player!=-1) return false;
 
 		return getTile(x, y)->walls[bit];
 	}
