@@ -69,7 +69,7 @@ class Board{
 		return getTile(x, y)->walls[bit];
 	}
 
-	vector<int> possibleMoves(int x, int y) {
+	vector<int> possibleMoves(int x, int y) { // Renvoie un vecteur contenant les bits de direction possibles pour un mouvement depuis (x,y)
 		vector<int> moves;
 		int k=0;
 
