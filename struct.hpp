@@ -22,7 +22,7 @@ typedef struct _tile {
 	vector<bool> walls;
 } Tile;
 
-class player: public sf::Drawable{
+class Player: public sf::Drawable{
 	private:
 		int id;
 		sf::Sprite sprite;
@@ -44,6 +44,7 @@ class player: public sf::Drawable{
 class Board{
   	private:
     vector<Tile *> board;
+	Player p1,Robot;
 
 	public:
     int width, height;
@@ -108,16 +109,25 @@ class Board{
 		return moves;
 	}
 
+	bool isMovePossiblePlayer(int x, int y, Player* player) { // Renvoie si le move dirigé par le bit est possible depuis (x,y)
+		Tile * t=getTile(x,y);
+		if(y-1>=0 && getTileId(x, y-1)==player && !t->walls[2]) return true;
+		else if(x-1>=0 && getTileId(x-1, y)==player && !t->walls[1]) return true;
+		else if(x+1>=0 && getTileId(x+1, y)==player && !t->walls[3]) return true;
+		else if(y+1>=0 && getTileId(x, y+1)==player && !t->walls[0]) return true;
+    return false;
+	}
+
+	void movePlayer(int x,int y){
+		getTile(p1.x,p1.y)->player=-1;
+		getTile(x,y)->player=p1.get_id();
+		p1.set_coord(x,y);
+	}
+
 	int getTileId(int x, int y) { // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
 		Tile * t = getTile(x, y);
 		return t->player;
-	}		
-
-	/*
-	void setTile(int x, int y, Tile * t) { // Change la tile (x,y) en la tile passée en argument
-		board[y*width+x]=t;
-	}
-	*/	
+	}	
 
 	void addOneWall(int x, int y, int bit) { // Ajoute un mur sur UNE TILE
 		getTile(x,y)->walls[bit]=true;
