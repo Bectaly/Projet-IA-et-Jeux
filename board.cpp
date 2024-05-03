@@ -15,7 +15,20 @@ Board createBoard(int w, int h)
     }
 }
 
-Board initGame(Board board)
+Item * initGame()
+{
+     int i;
+  Item *node;
+
+	char *initial = (char*)malloc(MAX_BOARD*sizeof(char));
+	for (int i=0; i<MAX_BOARD; i++) initial[i] = 0;
+    node = nodeAlloc();
+	initBoard(node, initial);
+  node->depth = 0;
+  return node;
+}
+}
+
 
 void printBoard(Board board)
 
@@ -38,25 +51,24 @@ double evaluateBoard(Item * node)
            }
         }
     }
-        return 0;
+    return 0;
 }
 
 
 void movePlayer(int id, int bit)
 
-Item *getChildBoard( Item *node,int x,int y, int bit )
+Item *getChildBoard( Item *node,int x,int y, int bit, int id )
 {
     Item *child_p = NULL;
     if ( isMovePossible(x,y, bit ) )
     {
          /* allocate and init child node */
         child_p=new_item();
-        initiBoard(child_p,node->board);
         /* Make move */
         child_p->parent=node;
     	child_p->depth=node->depth+1;
     	child_p->f= child_p->depth;
-    	child_p->board->set(x,y,child_p->depth);
+    	child_p->board->set(x,y,id+1);
     }
    return child_p;
 }
