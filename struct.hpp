@@ -26,7 +26,7 @@ class Board{
 
 	public:
     	int width, height;
-	Board(int width = WIDTH, int height = HEIGHT) { // Initialise un board vide, de dimension WIDTH*HEIGHTKJGKJGKJHG
+	Board(int width = WIDTH, int height = HEIGHT) { // Initialise un board vide, de dimension WIDTH*HEIGHTUYDJGFDJGFD
       		this->width = width;
       		this->height = height;
       		board.resize(width*height);
