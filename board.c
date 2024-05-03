@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdio>
-#include "board.hpp"
+#include "board.h"
 
 Board createBoard(int w, int h)
 {
