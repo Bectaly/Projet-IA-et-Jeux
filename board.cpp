@@ -40,8 +40,6 @@ void printBoard(Board board)
 
 void printBoardHumanReadable(Board board)
 
-void placeWall(int x, int y, int bit)
-
 double evaluateBoard(Item * node) 
 {
     int j;
@@ -60,8 +58,11 @@ double evaluateBoard(Item * node)
     return 0;
 }
 
+isValid_Wall (Item *node, int x, int y, int bit)
+{
+	
+}
 
-void movePlayer(int id, int bit)
 
 Item *getChildBoard( Item *node,int x,int y, int bit, int id )
 {
@@ -78,4 +79,9 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
     	child_p->board->set(x,y,id+1);
     }
    return child_p;
+}
+
+void placeWall(int x, int y, int bit)
+{
+	
 }
