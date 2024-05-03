@@ -28,10 +28,10 @@ Item * initGame()
   {
 	initial[i] = 0;
   }
-  y=
+  x=w/2;
   for (id=0; id<2; id=id+1)
   {
-	  initial->set(x*id,y,id+1);
+	  initial->set(x,y*id,id+1);
   }
   node = nodeAlloc();
   initBoard(node, initial);
