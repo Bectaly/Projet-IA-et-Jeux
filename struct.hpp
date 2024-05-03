@@ -69,6 +69,30 @@ class Board{
 		return getTile(x, y)->walls[bit];
 	}
 
+	vector<int> possibleMoves(int x, int y) {
+		vector<int> moves;
+		int k=0;
+
+		for(int bit=0; bit<4; bit++) {
+			if(isMovePossible(x, y, bit)) {
+				k++;
+			}
+		}
+
+		moves.resize(k);
+
+		int kk = 0;
+
+		for(int bit=0; bit<4; bit++) {
+			if(isMovePossible(x, y, bit)) {
+				vector[kk] = bit;
+				kk++;
+			}
+		}
+
+		return moves;
+	}
+
 	int getTileId(int x, int y) { // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
 		Tile * t = getTile(x, y);
 		return t->player;
