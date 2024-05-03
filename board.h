@@ -19,7 +19,9 @@ Board initGame(Board board)
 void printBoard(Board board)
 void printBoardHumanReadable(Board board)
 
-void placeWall(int x, int y, int bit)
-void movePlayer(int id, int bit)
+void placeWall(Board board, int x, int y, int bit)
+void movePlayer(Board board, int id, int bit)
+
+void getTileData(Board board, int x, int y)
 
 #endif
