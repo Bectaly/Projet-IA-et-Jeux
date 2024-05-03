@@ -69,21 +69,19 @@ class Board{
 		return getTile(x, y)->walls[bit];
 	}
 
-	int getTileId(int x, int y) { // Renvoie le bit du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
+	int getTileId(int x, int y) { // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
 		Tile * t = getTile(x, y);
 		return t->player;
 	}		
 
+	/*
 	void setTile(int x, int y, Tile * t) { // Change la tile (x,y) en la tile passée en argument
 		board[y*width+x]=t;
-	}		
+	}
+	*/	
 
 	void addOneWall(int x, int y, int bit) { // Ajoute un mur sur UNE TILE
-		Tile * t = getTile(x, y);
-
-		t->walls[bit]=true;
-
-		setTile(x, y, t);
+		getTile(x,y)->walls[bit]=true;
 	}
 
 	void addWall(int x, int y, int bit) { // Ajoute le mur sur les DEUX TILES mitoyennes concernées
