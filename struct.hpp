@@ -17,49 +17,54 @@
 
 using namespace std;
 
+typedef struct _couple {
+	int x,y;
+} Couple;
+
+extern vector<Couple> Bit;
+void define_Bit();// pour simplifier beaucoup les calculs de direction
+
 typedef struct _tile {
 	int player = -1;
 	vector<bool> walls;
 } Tile;
 
-class Player: public sf::Drawable{
-	private:
-		int id;
-		sf::Sprite sprite;
-    sf::Texture texture;
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override {//pour faciliter le display 
-            target.draw(sprite, states);
-        }
+class Coord{
 	public:
-		int x,y;//facile d'acces
+		int x,y,id;//facile d'acces
 		void set_coord(int x,int y){this->x=x;this->y=y;}
-		void set_id(int id){this->id=id;}
-		int get_id(){return id;}
-		void set_sprite(string name){//pour le skin
-			if (!texture.loadFromFile(name))cout<<"error de chargement du joueur"<<endl;
-			else sprite.setTexture(texture);
-		}
-};
 
+};
 
 class Board{
   	private:
       vector<Tile *> board;
-      Player p1,Robot;
+      Coord p1,robot;
 
 	public:
-    int width, height;
-    Board(int width = WIDTH, int height = HEIGHT); // Initialise un board vide, de dimension WIDTH*HEIGHT
-    int getPlayerPosition(int id); // Donne la position d'un joueur d'après son ID (0 ou 1)
-    int getBoardW() {return width;} // Renvoie la largeur du board
-    int getBoardH() {return height;} // Renvoie la hauteur du board
-    bool isMovePossible(int x, int y, int bit);  // Renvoie si le move dirigé par le bit est possible depuis (x,y)
-    bool isMovePossiblePlayer(int x, int y, Player* player);// Renvoie si le move dirigé par le bit est possible depuis (x,y)
-    vector<int> possibleMoves(int x, int y);// Renvoie un vecteur contenant les bits de direction possibles pour un mouvement depuis (x,y)
-    int getTileId(int x, int y) {return getTile(x, y)->player;}	 // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
-    void addOneWall(int x, int y, int bit) { getTile(x,y)->walls[bit]=true;}// Ajoute un mur sur UNE TILE
-    void addWall(int x, int y, int bit); // Ajoute le mur sur les DEUX TILES mitoyennes concernées
-    Tile * getTile(int x, int y) {return board[y*width+x];} // Renvoie le pointeur de la tile placée en (x,y)
+		int width, height;
+		Board(int width = WIDTH, int height = HEIGHT); // Initialise un board vide, de dimension WIDTH*HEIGHT
+		void setcoordplayers(Coord p1){
+			this->p1=p1;
+			getTile(p1.x,p1.y)->player=p1.id;
+		}
+		void setcoordrobot(Coord robot){
+			this->robot=robot;
+			getTile(robot.x,robot.y)->player=robot.id;
+		}
+		//void copy(Board&board);
+		int getPlayerPosition(int id); // Donne la position d'un joueur d'après son ID (0 ou 1)
+		bool isMovePossible(int x, int y, int bit);  // Renvoie si le move dirigé par le bit est possible depuis (x,y)
+		bool isMovePossiblePlayer(int x, int y);// Renvoie si le move dirigé par le bit est possible depuis (x,y)
+		void moveTo(int x,int y);
+		//void moveDir(int x,int y,int dir);
+		vector<int> possibleMoves(int x, int y);// Renvoie un vecteur contenant les bits de direction possibles pour un mouvement depuis (x,y)
+		int getTileId(int x, int y){return getTile(x, y)->player;} // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
+		bool getTileWall(int x, int y,int bit); // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
+		bool isWallValid(int x, int y,int bit); // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
+		void addOneWall(int x, int y, int bit) { getTile(x,y)->walls[bit]=true;}// Ajoute un mur sur UNE TILE
+		void addWall(int x, int y, int bit); // Ajoute le mur sur les DEUX TILES mitoyennes concernées
+		Tile * getTile(int x, int y) {return board[y*width+x];} // Renvoie le pointeur de la tile placée en (x,y)
 };
 
 struct Item_s;
@@ -70,5 +75,7 @@ typedef struct Item_s {
   	int depth;
   	struct Item_s * parent; 
 } Item;
+
+void printBoard(Board& b);
 
 #endif

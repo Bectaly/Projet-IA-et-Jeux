@@ -1,6 +1,20 @@
 #include "struct.hpp"
 
-Board::Board(int width = WIDTH, int height = HEIGHT) { // Initialise un board vide, de dimension WIDTH*HEIGHT
+vector<Couple> Bit(4);
+
+void define_Bit(){
+	Bit[0].x=0;
+	Bit[0].y=-1;
+	Bit[1].x=1;
+	Bit[1].y=0;
+	Bit[2].x=0;
+	Bit[2].y=1;
+	Bit[3].x=-1;
+	Bit[3].y=0;	
+}
+
+
+Board::Board(int width, int height) { // Initialise un board vide, de dimension WIDTH*HEIGHT
 	this->width = width;
 	this->height = height;
 	board.resize(width*height);
@@ -12,11 +26,9 @@ Board::Board(int width = WIDTH, int height = HEIGHT) { // Initialise un board vi
 	}
 }
 
-void Board::set_Player_Pos(Player p){
+//void Board::set_Player_Pos(Player p){}
 
-}
-
-bool isMovePossible(int x, int y, int bit) { // Renvoie si le move dirigé par le bit est possible depuis (x,y)
+bool Board::isMovePossible(int x, int y, int bit) { // Renvoie si le move dirigé par le bit est possible depuis (x,y)
 	bool b = false;
 	
 	if(bit==0 && y==0) b=true; // La case ciblée est-elle en dehors du board ?
@@ -38,20 +50,21 @@ bool isMovePossible(int x, int y, int bit) { // Renvoie si le move dirigé par l
 	return !(getTile(x, y)->walls[bit]);
 }
 
-bool Board::isMovePossiblePlayer(int x, int y,int id) { // Renvoie si le move dirigé par le bit est possible depuis (x,y)
-Tile * t=getTile(x,y);
-if(y-1>=0 && getTileId(x, y-1)==id && !t->walls[2]) return true;
-	else if(x-1>=0 && getTileId(x-1, y)==id && !t->walls[1]) return true;
-	else if(x+1>=0 && getTileId(x+1, y)==id && !t->walls[3]) return true;
-	else if(y+1>=0 && getTileId(x, y+1)==id && !t->walls[0]) return true;
-return false;
+bool Board::isMovePossiblePlayer(int x, int y) { // Renvoie si pos (x,y) a porter de player
+	if(getTileId(x,y)!=-1)return false;
+	Tile * t=getTile(x,y);
+	for(int i=0;i<4;i++){
+		int bx=Bit[i].x,by=Bit[i].y;
+		if(x+bx>=0 && x+bx<width && y+by>=0  && y+by<height && getTileId(x+bx, y+by)==p1.id && !t->walls[(i+2)%4]) return true;
+	}
+	return false;
 }
 
-void Board::movePlayer(int x,int y){
-getTile(p1.x,p1.y)->player=-1;
-getTile(x,y)->player=p1.get_id();
-p1.set_coord(x,y);
-}
+void Board::moveTo(int x,int y){
+	getTile(p1.x,p1.y)->player=-1;
+	getTile(x,y)->player=p1.id;
+	p1.set_coord(x,y);
+}	
 
 vector<int> Board::possibleMoves(int x, int y) { // Renvoie un vecteur contenant les bits de direction possibles pour un mouvement depuis (x,y)
 	vector<int> moves;
@@ -60,19 +73,46 @@ vector<int> Board::possibleMoves(int x, int y) { // Renvoie un vecteur contenant
 	for(int bit=0; bit<4; bit++) {
 		if(isMovePossible(x, y, bit)) {
 			moves.resize(k);
-			vector[k-1] = bit;
+			moves[k-1] = bit;
 			k++;
+			
 		}
 	}
 
 	return moves;
 }
 
+bool Board::getTileWall(int x, int y,int bit) {
+	return getTile(x, y)->walls[bit];
+}
+
+bool Board::isWallValid(int x, int y,int bit){
+	if(x+Bit[bit].x<0 && bit==3)return false;
+	if(x+Bit[bit].x>=width && bit==1)return false;
+	if(y+Bit[bit].y<0 && bit==0)return false;
+	if(y+Bit[bit].y>=height && bit==2)return false;
+	return !getTileWall(x,y,bit);
+}
+
 void Board::addWall(int x, int y, int bit) { // Ajoute le mur sur les DEUX TILES mitoyennes concernées
 	addOneWall(x, y, bit);
-
-	if (bit==0) addOneWall(x, y-1, 2);
-	else if (bit==1) addOneWall(x+1, y, 3);
-	else if (bit==2) addOneWall(x, y+1, 0);
-	else if (bit==3) addOneWall(x-1, y, 1);
+	addOneWall(x+Bit[bit].x,y+Bit[bit].y,(bit+2)%4);
 }
+
+string conv(int val){
+    if(val==-1)return " 0";
+    if(val==0)return "P1";
+    if(val==1)return "IA";
+    return "  ";
+}
+
+void printBoard(Board& b){
+    for(int y=0;y<b.height;y++){
+        cout<<"[ "<<conv(b.getTile(0,y)->player)<<" "<<ends;
+        for(int x=1;x<b.width;x++){
+            cout<<conv(b.getTile(x,y)->player)<<" "<<ends;
+        }
+        cout<<"]"<<endl;
+    }
+    cout<<endl;
+    }
