@@ -1,6 +1,6 @@
 #include "struct.hpp"
 
-vector<Couple> Bit(4);
+vector<sf::Vector2i> Bit(4);
 
 void define_Bit(){
 	Bit[0].x=0;
@@ -55,7 +55,7 @@ bool Board::isMovePossiblePlayer(int x, int y) { // Renvoie si pos (x,y) a porte
 	Tile * t=getTile(x,y);
 	for(int i=0;i<4;i++){
 		int bx=Bit[i].x,by=Bit[i].y;
-		if(x+bx>=0 && x+bx<width && y+by>=0  && y+by<height && getTileId(x+bx, y+by)==p1.id && !t->walls[(i+2)%4]) return true;
+		if(x+bx>=0 && x+bx<width && y+by>=0  && y+by<height && getTileId(x+bx, y+by)==p1.id && !t->walls[i]) return true;
 	}
 	return false;
 }
@@ -116,3 +116,14 @@ void printBoard(Board& b){
     }
     cout<<endl;
     }
+
+void printBoardWall(Board& b,int bit){
+    for(int y=0;y<b.height;y++){
+        cout<<"[ "<<b.getTile(0,y)->walls[bit]<<" "<<ends;
+        for(int x=1;x<b.width;x++){
+            cout<<b.getTile(x,y)->walls[bit]<<" "<<ends;
+        }
+        cout<<"]"<<endl;
+    }
+    cout<<endl;
+}

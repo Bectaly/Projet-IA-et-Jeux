@@ -18,8 +18,8 @@ void Grid::set(int taille,int largeur,int hauteur){
     }
 }
 
-Wall::Wall(int taille,int x,int y,int dir){
-    rectangle.setFillColor(sf::Color::Red);
+Wall::Wall(int taille,int x,int y,int dir,sf::Color color){
+    rectangle.setFillColor(color);
     if(Bit[dir].x!=0)rectangle.setSize(sf::Vector2f(10,taille));
     if(Bit[dir].y!=0)rectangle.setSize(sf::Vector2f(taille,10));
     int decal_x=0,decal_y=0;
@@ -32,6 +32,55 @@ Wall::Wall(int taille,int x,int y,int dir){
         decal_x=-taille/2;
     }
     rectangle.setPosition(taille*x+decal_x+taille/2,taille*y+decal_y+taille/2 );
+}
+
+Wall::Wall(int taille,int x,int y,int dir,string name){
+    if (texture.loadFromFile(name)){    
+        sprite.setTexture(texture);
+        size=texture.getSize();
+        sprite.setScale((double)epaisseur/size.x,(double)taille/size.y);
+        sp=true;
+        if(Bit[dir].y!=0)sprite.setRotation(-90);
+        int decal_x=0,decal_y=0;
+        if(Bit[dir].x!=0){
+            decal_x=Bit[dir].x*taille/2-epaisseur/2;
+            decal_y=-taille/2;
+        }
+        if(Bit[dir].y!=0){
+            decal_y=Bit[dir].y*taille/2+epaisseur/2;
+            decal_x=-taille/2;
+        }
+        sprite.setPosition(taille*x+decal_x+taille/2,taille*y+decal_y+taille/2);
+    }
+}
+
+
+void Player::init(int taille_tile,int id,sf::Color color){
+    coord.id=id;
+    //robot.setScale(1,1);
+    this->taille_tile=taille_tile;
+    cercle.setFillColor(color);
+    cercle.setRadius(taille_tile/3);
+}
+
+void Player::init(int taille_tile,int id,string name){
+    coord.id=id;
+    this->taille_tile=taille_tile;
+    if (texture.loadFromFile(name)){    
+        sprite.setTexture(texture);
+        size=texture.getSize();
+        sprite.setScale((double)taille_tile/size.x,(double)taille_tile/size.y);
+        sp=true;
+    }
+}
+
+void Player::set_coord(int x,int y){
+    coord.set_coord(x,y);
+}
+
+void Player::updatePosition() {
+    if(!sp)cercle.setPosition(taille_tile * coord.x+taille_tile/6, taille_tile * coord.y+taille_tile/6);
+    else sprite.setPosition(taille_tile * coord.x, taille_tile * coord.y);
 }
 
 Game::Game(int largeur,int hauteur){
@@ -50,29 +99,28 @@ Game::Game(int largeur,int hauteur){
     grid.set(taille_tile,largeur,hauteur);
 
     //init player
-    p1.init(taille_tile,0,sf::Color::Red);
+    p1.init(taille_tile,0,"p1.png");
     p1.set_coord(0,hauteur/2);
     p1.updatePosition();
     board.setcoordplayers(p1.getCoord());
 
-    robot.init(taille_tile,1,sf::Color::Green);
-    robot.set_coord(largeur-,hauteur/2);
+    robot.init(taille_tile,1,"robot.png");
+    robot.set_coord(largeur-1,hauteur/2);
     robot.updatePosition();
     board.setcoordrobot(robot.getCoord());
 
     //init wall
-    cout<<"la nbr barriere:"<<nbr_wall_max<<endl;
     walls.resize(nbr_wall_max,NULL);
 
 }
 
 int Game::calc_dir(int x,int y,double xx,double yy){
     double vectx=xx-x-1/2.0,vecty=yy-y-1/2.0;
-    //cout<<" "<<x<<" "<<y<<" "<<xx<<" "<<yy<<" "<<vectx<<" "<<vecty<<endl;
     if(abs(vectx)>abs(vecty) && vectx>0) return 1;
     if(abs(vectx)>abs(vecty) && vectx<0) return 3;
     if(abs(vectx)<abs(vecty) && vecty>0) return 2;
     if(abs(vectx)<abs(vecty) && vecty<0) return 0;
+    
     return -1;
 }
 
@@ -108,7 +156,7 @@ int Game::event(){
             int dir=calc_dir(x,y,position.x/(double)taille_tile,position.y/(double)taille_tile);
             if(dir !=-1 && board.isWallValid(x,y,dir)){
                 cout<<nbr_wall<<endl;
-                walls[nbr_wall]=new Wall(taille_tile,x,y,dir);
+                walls[nbr_wall]=new Wall(taille_tile,x,y,dir,"wall.png");
                 board.addWall(x,y,dir);
                 nbr_wall++;
             }

@@ -6,27 +6,22 @@
 class Player: public sf::Drawable{
 	private:
         int taille_tile;
+        sf::Vector2u size;
+        bool sp=false;
 		sf::CircleShape cercle;
 		sf::Sprite sprite;
     	sf::Texture texture;
         Coord coord;
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override {//pour faciliter le display 
-            target.draw(cercle, states);
+            if(!sp)target.draw(cercle, states);
+            else target.draw(sprite, states);
         }
 	public:
-		void init(int taille_tile,int id,sf::Color color){
-            coord.id=id;
-            this->taille_tile=taille_tile;
-            cercle.setFillColor(color);
-            cercle.setRadius(taille_tile/3);
-        }
+		void init(int taille_tile,int id,string name);
+		void init(int taille_tile,int id,sf::Color color);
         Coord getCoord(){return coord;}
-        void set_coord(int x,int y){coord.set_coord(x,y);}
-        void updatePosition() {cercle.setPosition(taille_tile * coord.x+taille_tile/6, taille_tile * coord.y+taille_tile/6);}
-		void set_sprite(string name){//pour le skin
-			if (!texture.loadFromFile(name))cout<<"error de chargement du joueur"<<endl;
-			else sprite.setTexture(texture);
-		}
+        void set_coord(int x,int y);
+        void updatePosition();
 };
 
 class Grid: public sf::Drawable{
@@ -45,11 +40,18 @@ class Grid: public sf::Drawable{
 
 class Wall: public sf::Drawable{
     private:
+        int epaisseur=15;
         sf::RectangleShape rectangle;
+        sf::Vector2u size;
+        bool sp=false;
+        sf::Sprite sprite;
+    	sf::Texture texture;
     public:
-        Wall(int taille=0,int x=0,int y=0,int dir=0);
+        Wall(int taille=0,int x=0,int y=0,int dir=0,string name="");
+        Wall(int taille=0,int x=0,int y=0,int dir=0,sf::Color color=sf::Color::Red);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
-            target.draw(rectangle, states);
+            if(!sp)target.draw(rectangle, states);
+            else target.draw(sprite, states);
         }
 };
 

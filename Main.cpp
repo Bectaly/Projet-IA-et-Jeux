@@ -51,7 +51,7 @@ std::vector<Item*> astar(int id) {
 
 int main()
 { 
-  int n=10;
+  int n=5;
   Game g(n,n);
   g.Run();
   return 0;

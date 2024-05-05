@@ -17,12 +17,8 @@
 
 using namespace std;
 
-typedef struct _couple {
-	int x,y;
-} Couple;
-
-extern vector<Couple> Bit;
-void define_Bit();// pour simplifier beaucoup les calculs de direction
+extern vector<sf::Vector2i> Bit;
+void define_Bit();
 
 typedef struct _tile {
 	int player = -1;
@@ -77,5 +73,5 @@ typedef struct Item_s {
 } Item;
 
 void printBoard(Board& b);
-
+void printBoardWall(Board& b,int bit);
 #endif
