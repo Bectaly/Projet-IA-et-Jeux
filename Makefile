@@ -15,5 +15,7 @@ Display.o: Display.cpp Display.hpp struct.hpp
 
 main: main.o Display.o struct.o
 	$(CXX) -o main main.o Display.o struct.o $(SFMLFLAGS)
+
+clean:
 	rm -f *.o
 	
