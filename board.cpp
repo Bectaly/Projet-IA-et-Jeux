@@ -7,9 +7,25 @@ Item * initBoard (Item * node, Board board)
   assert( node );
   for(int i=0;i<(WIDTH * HEIGHT);i++)
   {
-    	node->board[i]=board[i];
+      node->board[i]=board[i];
   }
 }
+
+Item *new_item()
+{
+  Item *node;
+
+  node = (Item *) malloc( sizeof(Item) );
+  assert(node);
+  Board board();
+  node->board = board;
+  node->parent = NULL;
+  node->depth= 0;
+  node->f = node->g = node->h = (double)0.0;
+
+  return node;
+}
+
 
 Item * initGame()
 {
@@ -22,12 +38,12 @@ Item * initGame()
   Board initial ();
   for (int i=0; i<size; i++) 
   {
-	initial[i] = 0;
+  initial[i] = 0;
   }
   x=w/2;
   for (id=0; id<2; id=id+1)
   {
-	  initial->set(x,y*id,id+1);
+    initial->set(x,y*id,id+1);
   }
   node = new_item();
   initBoard(node, initial);
@@ -36,9 +52,23 @@ Item * initGame()
 }
 
 
-void printBoard(Board board)
+void printBoard(item * node)
+{
+  assert(node);
+  printf("\n");
+  for (int j=0; j<WIDTH; j++) if (j==0) printf(" ___"); else printf("____"); printf("\n");
+  for (int i = 0 ; i < WIDTH*HEIGHT ; i++) {
+    if (i%WIDTH == 0) printf("|");
+    if (node->board[i] == 0) printf("   |");
+    else printf("%2d |", node->board[i]);
+    if (((i+1)%WIDTH) == 0) {
+      printf("\n");
+      for (int j=0; j<WIDTH; j++) if (j==0) printf(" ___"); else printf("____"); printf("\n");
+    }
+  }
+  printf("\n");
+}
 
-void printBoardHumanReadable(Board board)
 
 double evaluateBoard(Item * node) 
 {
@@ -58,9 +88,13 @@ double evaluateBoard(Item * node)
     return 0;
 }
 
-isValid_Wall (Item *node, int x, int y, int bit)
+bool isValid_Wall (Item *node, int x, int y, int bit)
 {
-	//verifions s'il est possible de poser un mur à cet emplacement 
+  if (exist_path(node,x,y,bit))
+  {
+    return 1;
+  }
+  return 0;
 }
 
 
@@ -71,17 +105,17 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
     {
          /* allocate and init child node */
         child_p=new_item();
-	initiBoard (child_p, node->board);
+  initiBoard (child_p, node->board);
         /* Make move */
         child_p->parent=node;
-    	child_p->depth=node->depth+1;
-    	child_p->f= child_p->depth;
-    	child_p->board->set(x,y,id+1);
+      child_p->depth=node->depth+1;
+      child_p->f= child_p->depth;
+      child_p->board->set(x,y,id+1);
     }
    return child_p;
 }
 
 void placeWall(int x, int y, int bit)
 {
-	
+  if (isValid_Wall(node, x,y,bit))
 }
