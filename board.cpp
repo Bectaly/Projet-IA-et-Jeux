@@ -38,7 +38,7 @@ Item * initGame()
   Board initial ();
   for (int i=0; i<size; i++) 
   {
-  initial[i] = 0;
+    initial[i] = 0;
   }
   x=w/2;
   for (id=0; id<2; id=id+1)
@@ -80,7 +80,7 @@ double evaluateBoard(Item * node)
         {
            if ((node->board).getPlayerPosition (id) == node->board[j][id*HEIGHT])
            {
-               cout << "Le joueur " << id << endl;
+               cout << "Le joueur " << id << "à gagné !!" << endl;
                return 1;
            }
         }
@@ -105,7 +105,7 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
     {
          /* allocate and init child node */
         child_p=new_item();
-  initiBoard (child_p, node->board);
+      initBoard (child_p, node->board);
         /* Make move */
         child_p->parent=node;
       child_p->depth=node->depth+1;
@@ -118,4 +118,11 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
 void placeWall(int x, int y, int bit)
 {
   if (isValid_Wall(node, x,y,bit))
+}
+ 
+bool exist_path(item * node, int x, int y, int bit))
+{
+   if (dfs ( node->board,0) && dfs (node->board, 1))
+       return 1;
+  return 0;
 }
