@@ -17,10 +17,12 @@ class Player: public sf::Drawable{
             else target.draw(sprite, states);
         }
 	public:
+        int id,nbr_wall;
 		void init(int taille_tile,int id,string name);
 		void init(int taille_tile,int id,sf::Color color);
         Coord getCoord(){return coord;}
         void set_coord(int x,int y);
+        void moveDir(int bit);
         void updatePosition();
 };
 
@@ -60,7 +62,10 @@ class Game{
         //window
         sf::RenderWindow window;
         sf::Vector2i position;
+        //player 
         Player p1,robot;
+        int p1_id=0,robot_id=1;
+        //grille
         Grid grid;
         int taille_tile=100;
         int largeur,hauteur;

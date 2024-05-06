@@ -56,15 +56,14 @@ Wall::Wall(int taille,int x,int y,int dir,string name){
 
 
 void Player::init(int taille_tile,int id,sf::Color color){
-    coord.id=id;
-    //robot.setScale(1,1);
+    this->id=id;
     this->taille_tile=taille_tile;
     cercle.setFillColor(color);
     cercle.setRadius(taille_tile/3);
 }
 
 void Player::init(int taille_tile,int id,string name){
-    coord.id=id;
+    this->id=id;
     this->taille_tile=taille_tile;
     if (texture.loadFromFile(name)){    
         sprite.setTexture(texture);
@@ -76,6 +75,10 @@ void Player::init(int taille_tile,int id,string name){
 
 void Player::set_coord(int x,int y){
     coord.set_coord(x,y);
+}
+
+void Player::moveDir(int bit){
+    coord.set_coord(coord.x+Bit[bit].x,coord.y+Bit[bit].y);
 }
 
 void Player::updatePosition() {
@@ -102,12 +105,12 @@ Game::Game(int largeur,int hauteur){
     p1.init(taille_tile,0,"p1.png");
     p1.set_coord(0,hauteur/2);
     p1.updatePosition();
-    board.setcoordplayers(p1.getCoord());
+    board.setcoord(p1.getCoord(),0);
 
     robot.init(taille_tile,1,"robot.png");
     robot.set_coord(largeur-1,hauteur/2);
     robot.updatePosition();
-    board.setcoordrobot(robot.getCoord());
+    board.setcoord(robot.getCoord(),1);
 
     //init wall
     walls.resize(nbr_wall_max,NULL);
@@ -137,25 +140,22 @@ int Game::event(){
        window.setSize(sf::Vector2u(largeur_px,hauteur_px));
     }
     if(event.type == sf::Event::MouseButtonPressed){
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-        {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             position=sf::Mouse::getPosition(window);
-            x=position.x/taille_tile;
-            y=position.y/taille_tile;
-            if(board.getTileId(x,y)==-1 && board.isMovePossiblePlayer(x,y)){
-                board.moveTo(x,y);
-                p1.set_coord(x,y);
+            Coord c=p1.getCoord();
+            int dir=calc_dir(c.x,c.y,position.x/(double)taille_tile,position.y/(double)taille_tile);
+            if(board.isMovePossiblePlayerDir(dir,p1.id)){
+                board.moveDir(dir,p1.id);
+                p1.moveDir(dir);
                 p1.updatePosition();
             }
         }
-        if (nbr_wall<nbr_wall_max && sf::Mouse::isButtonPressed(sf::Mouse::Right))
-        {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)){
             position=sf::Mouse::getPosition(window);
             x=position.x/taille_tile;
             y=position.y/taille_tile;
             int dir=calc_dir(x,y,position.x/(double)taille_tile,position.y/(double)taille_tile);
-            if(dir !=-1 && board.isWallValid(x,y,dir)){
-                cout<<nbr_wall<<endl;
+            if(dir !=-1 && p1.nbr_wall<nbr_wall_max && board.isWallValid(x,y,dir)){
                 walls[nbr_wall]=new Wall(taille_tile,x,y,dir,"wall.png");
                 board.addWall(x,y,dir);
                 nbr_wall++;

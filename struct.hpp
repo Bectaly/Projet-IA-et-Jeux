@@ -13,7 +13,7 @@
 #define WIDTH 5
 #define HEIGHT 5
 
-#define WALL_INIT (int)(0.07*(2*WIDTH*HEIGHT - WIDTH - HEIGHT))
+#define WALL_INIT (int)0.07*2*(2*WIDTH*HEIGHT - WIDTH - HEIGHT)
 
 using namespace std;
 
@@ -27,7 +27,7 @@ typedef struct _tile {
 
 class Coord{
 	public:
-		int x,y,id;//facile d'acces
+		int x,y;//facile d'acces
 		void set_coord(int x,int y){this->x=x;this->y=y;}
 
 };
@@ -35,31 +35,30 @@ class Coord{
 class Board{
   	private:
       vector<Tile *> board;
-      Coord p1,robot;
+	  vector<Coord> player;
 
 	public:
 		int width, height;
 		Board(int width = WIDTH, int height = HEIGHT); // Initialise un board vide, de dimension WIDTH*HEIGHT
-		void setcoordplayers(Coord p1){
-			this->p1=p1;
-			getTile(p1.x,p1.y)->player=p1.id;
-		}
-		void setcoordrobot(Coord robot){
-			this->robot=robot;
-			getTile(robot.x,robot.y)->player=robot.id;
+		void setcoord(Coord p1,int id){
+			player[id]=p1;
+			getTile(p1.x,p1.y)->player=id;
 		}
 		//void copy(Board&board);
 		int getPlayerPosition(int id); // Donne la position d'un joueur d'après son ID (0 ou 1)
 		bool isMovePossible(int x, int y, int bit);  // Renvoie si le move dirigé par le bit est possible depuis (x,y)
-		bool isMovePossiblePlayer(int x, int y);// Renvoie si le move dirigé par le bit est possible depuis (x,y)
-		void moveTo(int x,int y);
-		//void moveDir(int x,int y,int dir);
+		bool isMovePossiblePlayer(int x, int y,int id);// Renvoie si le move dirigé par le bit est possible depuis (x,y)
+		bool isMovePossiblePlayerDir(int bit,int id);
+		void moveTo(int x,int y,int id);
+		void moveDir(int dir,int id);
 		vector<int> possibleMoves(int x, int y);// Renvoie un vecteur contenant les bits de direction possibles pour un mouvement depuis (x,y)
 		int getTileId(int x, int y){return getTile(x, y)->player;} // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
+		int getTileId(Coord c){return getTile(c)->player;} // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
 		bool getTileWall(int x, int y,int bit); // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
 		bool isWallValid(int x, int y,int bit); // Renvoie l'id du player positionné en (x,y), 0 ou 1, et -1 si la case est vide
 		void addOneWall(int x, int y, int bit) { getTile(x,y)->walls[bit]=true;}// Ajoute un mur sur UNE TILE
 		void addWall(int x, int y, int bit); // Ajoute le mur sur les DEUX TILES mitoyennes concernées
+		Tile * getTile(Coord c) {return board[c.y*width+c.x];} // Renvoie le pointeur de la tile placée en (x,y)
 		Tile * getTile(int x, int y) {return board[y*width+x];} // Renvoie le pointeur de la tile placée en (x,y)
 };
 

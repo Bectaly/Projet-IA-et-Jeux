@@ -18,15 +18,13 @@ Board::Board(int width, int height) { // Initialise un board vide, de dimension 
 	this->width = width;
 	this->height = height;
 	board.resize(width*height);
-	for(int i=0; i<width*height; i++)
-	{
+	player.resize(2);
+	for(int i=0; i<width*height; i++){
 		Tile * t = new Tile;
 		t->walls.resize(4, false);
 		board[i] = t;
 	}
 }
-
-//void Board::set_Player_Pos(Player p){}
 
 bool Board::isMovePossible(int x, int y, int bit) { // Renvoie si le move dirigÃ© par le bit est possible depuis (x,y)
 	bool b = false;
@@ -50,20 +48,31 @@ bool Board::isMovePossible(int x, int y, int bit) { // Renvoie si le move dirigÃ
 	return !(getTile(x, y)->walls[bit]);
 }
 
-bool Board::isMovePossiblePlayer(int x, int y) { // Renvoie si pos (x,y) a porter de player
+bool Board::isMovePossiblePlayer(int x, int y,int id) { // Renvoie si pos (x,y) a porter de player
 	if(getTileId(x,y)!=-1)return false;
 	Tile * t=getTile(x,y);
 	for(int i=0;i<4;i++){
 		int bx=Bit[i].x,by=Bit[i].y;
-		if(x+bx>=0 && x+bx<width && y+by>=0  && y+by<height && getTileId(x+bx, y+by)==p1.id && !t->walls[i]) return true;
+		if(x+bx>=0 && x+bx<width && y+by>=0  && y+by<height && getTileId(x+bx, y+by)==id && !t->walls[i]) return true;
 	}
 	return false;
 }
 
-void Board::moveTo(int x,int y){
-	getTile(p1.x,p1.y)->player=-1;
-	getTile(x,y)->player=p1.id;
-	p1.set_coord(x,y);
+bool Board::isMovePossiblePlayerDir(int bit,int id) {
+	return isMovePossiblePlayer(player[id].x+Bit[bit].x,player[id].y+Bit[bit].y,id);
+}
+
+void Board::moveTo(int x,int y,int id){
+	getTile(player[id].x,player[id].y)->player=-1;
+	getTile(x,y)->player=id;
+	player[id].set_coord(x,y);
+}	
+
+void Board::moveDir(int bit,int id){
+	int x=player[id].x,y=player[id].y;
+	getTile(x,y)->player=-1;
+	getTile(x+Bit[bit].x,y+Bit[bit].y)->player=id;
+	player[id].set_coord(x+Bit[bit].x,y+Bit[bit].y);
 }	
 
 vector<int> Board::possibleMoves(int x, int y) { // Renvoie un vecteur contenant les bits de direction possibles pour un mouvement depuis (x,y)
