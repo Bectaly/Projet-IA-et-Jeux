@@ -98,5 +98,8 @@ int main()
   int n=5;
   Game g(n,n);
   g.Run();
+  item* node;
+  node = new_item ();
+  node->board = initboard( )
   return 0;
 }
