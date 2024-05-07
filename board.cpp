@@ -119,7 +119,7 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
 void placeWall(int x, int y, int bit)
 {
   if (isValid_Wall(node, x,y,bit))
-    addWall(
+    Board::addWall(x,y,bit);
 }
  
 bool exist_path(item * node, int x, int y, int bit))
