@@ -68,7 +68,8 @@ typedef struct Item_s {
 	Board * board;
  	float f, g, h;
   	int depth;
-  	struct Item_s * parent; 
+  	struct Item_s * parent;
+	struct Item_s * prev, * next; 
 } Item;
 
 void printBoard(Board& b);

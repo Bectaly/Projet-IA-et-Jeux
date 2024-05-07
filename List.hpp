@@ -1,6 +1,8 @@
 #ifndef _LIST_H_
 #define _LIST_H_
 
+#include "struct.hpp"
+
 class List{
     private:
         vector<Item*> Li;
