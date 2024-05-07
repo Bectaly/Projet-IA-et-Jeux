@@ -47,7 +47,7 @@ std::vector<Item*> astar(int id) {
     return reachableNodes;
 }
 
-bool dfs( int id, Board board)
+bool dfs(Board board, int id)
 {
   Item *cur_node, *child_p, *temp;
   int i;
