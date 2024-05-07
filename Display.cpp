@@ -86,7 +86,7 @@ void Player::updatePosition() {
     if(!sp)cercle.setPosition(taille_tile * coord.x+taille_tile/6, taille_tile * coord.y+taille_tile/6);
     else sprite.setPosition(taille_tile * coord.x, taille_tile * coord.y);
 }
- 
+
 Game::Game(int largeur,int hauteur){
     //bit
     define_Bit();
