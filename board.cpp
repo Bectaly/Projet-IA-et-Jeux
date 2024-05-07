@@ -106,12 +106,11 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
          /* allocate and init child node */
         child_p=new_item();
       initBoard (child_p, node->board);
-      child_p->b
         /* Make move */
       child_p->parent=node;
       child_p->depth=node->depth+1;
       child_p->f= child_p->depth;
-      child_p->board->set(x,y,id);
+      moveDir (bit,id);
     }
    return child_p;
 }
