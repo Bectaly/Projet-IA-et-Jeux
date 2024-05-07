@@ -103,12 +103,12 @@ Game::Game(int largeur,int hauteur){
     grid.set(taille_tile,largeur,hauteur);
 
     //init player
-    p1.init(taille_tile,0,"p1.png");
+    p1.init(taille_tile,0,"./image/p1.png");
     p1.set_coord(0,hauteur/2);
     p1.updatePosition();
     board.setcoord(p1.getCoord(),0);
 
-    robot.init(taille_tile,1,"robot.png");
+    robot.init(taille_tile,1,"./image/robot.png");
     robot.set_coord(largeur-1,hauteur/2);
     robot.updatePosition();
     board.setcoord(robot.getCoord(),1);
@@ -157,7 +157,7 @@ int Game::event(){
             y=position.y/taille_tile;
             int dir=calc_dir(x,y,position.x/(double)taille_tile,position.y/(double)taille_tile);
             if(dir !=-1 && p1.nbr_wall<nbr_wall_max && board.isWallValid(x,y,dir)){
-                walls[nbr_wall]=new Wall(taille_tile,x,y,dir,"wall.png");
+                walls[nbr_wall]=new Wall(taille_tile,x,y,dir,"./image/wall.png");
                 board.addWall(x,y,dir);
                 nbr_wall++;
             }
