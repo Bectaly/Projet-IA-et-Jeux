@@ -58,6 +58,8 @@ bool dfs(Board board, int id)
 {
   Item *cur_node, *child_p, *temp;
   int i;
+  List openList_p;
+  List closedList_p;
   openList_p.initList; 
   closedList_p.initList;
   Item *initial_state = initGame();
@@ -83,7 +85,7 @@ bool dfs(Board board, int id)
       /* Enumerate adjacent states */
       for (int i = 0; i < WIDTH*HEIGHT; i++) {
      
-        child_p = getChildBoard( cur_node, i );
+        child_p = getChildBoard( cur_node, bit, i);
    	
         if (child_p != NULL) { // it's a valid child!
 					
@@ -97,6 +99,7 @@ bool dfs(Board board, int id)
   }
 	return 0;
  }
+
 
 
 
