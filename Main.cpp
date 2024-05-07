@@ -51,6 +51,10 @@ bool dfs(Board board, int id)
 {
   Item *cur_node, *child_p, *temp;
   int i;
+  initList(&openList_p); 
+  initList(&closedList_p);
+  Item *initial_state = initGame();
+  addLast( &openList_p, initial_state );
 
   while ( listCount(&openList_p) != 0 ) { /* While items are on the open list */
    	
@@ -64,15 +68,13 @@ bool dfs(Board board, int id)
     /* Add it to the "visited" list */
     addFirst(&closedList_p,cur_node);
     /* Do we have a solution? */
-    if ( evaluateBoard(cur_node) == 0.0 ) {
-   
-      showSolution(cur_node);
-      return;
-
-    } else {
+    if ( evaluateBoard(cur_node)) {
+      return 1;
+    } 
+    else {
 
       /* Enumerate adjacent states */
-      for (int i = 0; i < MAX_BOARD; i++) {
+      for (int i = 0; i < WIDTH*HEIGHT; i++) {
      
         child_p = getChildBoard( cur_node, i );
    	
@@ -86,6 +88,7 @@ bool dfs(Board board, int id)
       }
     }
   }
+	return 0;
  }
 
 
