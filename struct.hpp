@@ -10,6 +10,9 @@
 #include <vector>
 #include <random>
 
+#include "list.hpp"
+#include "display.hpp"
+
 #define WIDTH 5
 #define HEIGHT 5
 

@@ -2,6 +2,7 @@
 #define _DISPLAY_H 
 
 #include "struct.hpp"
+#include "list.hpp"
 
 class Player: public sf::Drawable{
 	private:

@@ -1,4 +1,6 @@
 #include "struct.hpp"
+#include "list.hpp"
+#include "display.hpp"
 
 vector<sf::Vector2i> Bit(4);
 
