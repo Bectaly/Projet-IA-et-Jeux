@@ -8,26 +8,28 @@ class List{
         vector<Item*> Li;
         Item* trans;
     public:
-
+        /*
         Item * find(Board * board){
             bool b;
             int x,y;
             Board* bo;
             for(int i=0;i<(int)Li.size();i++){
                 bo=Li[i]->board;
-                b=true;
+                b=false;
                 x=0;
                 while(x<bo->height && b){
                     y=0;
                     while(y<bo->width && b){
-                        if(bo->get(x,y) != board->get(x,y)) b=false;
+                        if((bo->x == board->x) && (bo->y == board->y)) b=true;
                         y++;
                     }
+                    x++;
                 }
                 if(b) return Li[i];
             }
             return NULL;
         }
+        */
 
         Item * popBest(){
             double f=Li[0]->f;
