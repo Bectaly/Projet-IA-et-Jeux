@@ -1,29 +1,16 @@
-#ifndef BOARD_H
-#define BOARD_H
+#ifndef BOARD_HPP
+#define BOARD_HPP
+#include "struct.hpp"
 
-#include "list.hpp"
-
-typedef struct z_tile
-{
-    bool up;
-    bool right;
-    bool down;
-    bool left;
-    bool p1;
-    bool p2;
-} Tile;
-
-typedef Tile* Board;
-
-Board createBoard(int w, int h)
-Board initGame(Board board)
-
-void printBoard(Board board)
-void printBoardHumanReadable(Board board)
-
-void placeWall(Board board, int x, int y, int bit)
-void movePlayer(Board board, int id, int bit)
-
-void getTileData(Board board, int x, int y)
+Item * initBoard (Item * node, Board board);
+Item *new_item();
+Item * initGame();
+Board initGame(Board board);
+void printBoard(Item * node);
+double evaluateBoard(Item * node);
+bool isValid_Wall (Item *node, int x, int y, int bit);
+Item *getChildBoard( Item *node,int bit, int id );
+void placeWall(int x, int y, int bit);
+ bool exist_path(Item * node, int x, int y, int bit);
 
 #endif
