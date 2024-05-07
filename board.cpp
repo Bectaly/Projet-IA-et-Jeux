@@ -110,7 +110,7 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
       child_p->parent=node;
       child_p->depth=node->depth+1;
       child_p->f= child_p->depth;
-      child_p->board->set(x,y,id+1);
+      child_p->board->set(x,y,id);
     }
    return child_p;
 }
