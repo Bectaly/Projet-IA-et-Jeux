@@ -1,3 +1,4 @@
+#include <cstdio.h>
 #include <iostream>
 #include "board.hpp"
 
@@ -51,7 +52,7 @@ Item * initGame()
 }
 
 
-void printBoard(item * node)
+void printBoard(Item * node)
 {
   assert(node);
   printf("\n");
@@ -120,7 +121,7 @@ void placeWall(int x, int y, int bit)
     Board::addWall(x,y,bit);
 }
  
-bool exist_path(item * node, int x, int y, int bit))
+bool exist_path(Item * node, int x, int y, int bit)
 {
    if (dfs ( node->board,0) && dfs (node->board, 1))
        return 1;
