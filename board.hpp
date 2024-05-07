@@ -1,6 +1,8 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "list.hpp"
+
 typedef struct z_tile
 {
     bool up;

@@ -17,9 +17,9 @@ class List{
                 bo=Li[i]->board;
                 b=true;
                 x=0;
-                while(x<bo->hauteur && b){
+                while(x<bo->height && b){
                     y=0;
-                    while(y<bo->largeur && b){
+                    while(y<bo->width && b){
                         if(bo->get(x,y) != board->get(x,y)) b=false;
                         y++;
                     }
