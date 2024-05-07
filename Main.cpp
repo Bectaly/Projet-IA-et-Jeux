@@ -1,5 +1,6 @@
 #include "display.hpp"
 #include "struct.cpp"
+#include "list.hpp"
 
 std::vector<Item*> astar(int id) {
     std::vector<Item*> reachableNodes;
