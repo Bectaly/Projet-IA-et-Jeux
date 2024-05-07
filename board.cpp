@@ -1,6 +1,5 @@
-#include <cstdio.h>
 #include <iostream>
-#include "board.h"
+#include "board.hpp"
 
 Item * initBoard (Item * node, Board board) 
 {
