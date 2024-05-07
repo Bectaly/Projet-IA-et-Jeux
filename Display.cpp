@@ -1,6 +1,5 @@
 #include "display.hpp"
 #include "struct.hpp"
-#include "list.hpp"
 
 void Grid::set(int taille,int largeur,int hauteur){
     taille_tile=taille;
