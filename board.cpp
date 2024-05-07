@@ -98,13 +98,13 @@ bool isValid_Wall (Item *node, int x, int y, int bit)
 }
 
 
-Item *getChildBoard( Item *node,int x,int y, int bit, int id )
+Item *getChildBoard( Item *node,int bit, int id )
 {
     Item *child_p = NULL;
-    if ( isMovePossible(x,y, bit ) )
+    if ( isMovePossiblePlayerDir (bit,id) )
     {
          /* allocate and init child node */
-        child_p=new_item();
+      child_p=new_item();
       initBoard (child_p, node->board);
         /* Make move */
       child_p->parent=node;
