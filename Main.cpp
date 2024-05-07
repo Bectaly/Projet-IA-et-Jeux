@@ -1,6 +1,7 @@
 #include "display.hpp"
 #include "struct.cpp"
 #include "list.hpp"
+#include "board.hpp"
 
 std::vector<Item*> astar(int id) {
     std::vector<Item*> reachableNodes;
@@ -18,9 +19,11 @@ std::vector<Item*> astar(int id) {
       
 
         if (onList(&closedList_p, cur_node->board) == NULL) {
-            addFirst(&closedList_p, cur_node);
+            //addFirst(&closedList_p, cur_node);
+            addLast(&closedList_p, cur_node);
             //vecteur moves
-            vector<int> moves= possibleMove(child_p->id);
+            //vector<int> moves= possibleMove(child_p->id);
+            vector<int> moves= possibleMoves(child_p->board);
             for (int i = 0; i < moves.size(); i++) {
                 // Generate child node
                 child_p = getChildBoard(cur_node, x,y,moves[i],id);
@@ -33,11 +36,13 @@ std::vector<Item*> astar(int id) {
                             child_p->h = getSimpleHeuristic(child_p);
                             child_p->g = child_p->depth;
                             child_p->f = child_p->g + child_p->h;
-                            addFirst(&openList_p, child_p);
+                            //addFirst(&openList_p, child_p);
+                            addLast(&openList_p, child_p);
                         } else {
                             temp = onList(&openList_p, child_p->board);
                             if (temp->f > child_p->f) {
-                                addFirst(&openList_p, child_p);
+                                //addFirst(&openList_p, child_p);
+                                addLast(&openList_p, child_p);
                             }
                         }
                     }
@@ -100,7 +105,7 @@ int main()
   int n=5;
   Game g(n,n);
   g.Run();
-  item* node;
+  Item* node;
   node = initGame();
   cout << dfs (node->board, 0) << "voilà" << endl;
   return 0;
