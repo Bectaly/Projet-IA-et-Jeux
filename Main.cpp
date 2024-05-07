@@ -52,22 +52,22 @@ bool dfs(Board board, int id)
 {
   Item *cur_node, *child_p, *temp;
   int i;
-  initList(&openList_p); 
-  initList(&closedList_p);
+  openList_p.initList; 
+  closedList_p.initList;
   Item *initial_state = initGame();
-  addLast( &openList_p, initial_state );
+  openList_p.addLast( initial_state );
 
-  while ( listCount(&openList_p) != 0 ) { /* While items are on the open list */
-   	
+  while ( openList_p.listCount != 0 ) { /* While items are on the open list */
+   
     /* Get the first item on the open list */
     
-    cur_node = popFirst(&openList_p);
+    cur_node = openList_p.popFirst;
 
 		
     // printf("%d  %f\n", listCount(&openList_p), evaluateBoard( cur_node ));
 
     /* Add it to the "visited" list */
-    addFirst(&closedList_p,cur_node);
+    closedList_p.addFirst(cur_node);
     /* Do we have a solution? */
     if ( evaluateBoard(cur_node)) {
       return 1;
@@ -82,9 +82,9 @@ bool dfs(Board board, int id)
         if (child_p != NULL) { // it's a valid child!
 					
                 /* Ignore this child if already visited */
-		if ((onList(&closedList_p,child_p->board))==NULL && (onList(&openList_p,child_p->board)==NULL))	
+		if ((closedList_p.onList(child_p->board))==NULL && (openList_p.onList(child_p->board)==NULL))	
                 /* Add child node to openList */
-	  			addFirst( &openList_p, child_p );
+	  			 openList_p.addFirst( child_p );
         }
       }
     }
