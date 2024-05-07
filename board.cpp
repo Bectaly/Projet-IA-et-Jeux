@@ -106,6 +106,7 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
          /* allocate and init child node */
         child_p=new_item();
       initBoard (child_p, node->board);
+      child_p->b
         /* Make move */
       child_p->parent=node;
       child_p->depth=node->depth+1;
@@ -118,6 +119,7 @@ Item *getChildBoard( Item *node,int x,int y, int bit, int id )
 void placeWall(int x, int y, int bit)
 {
   if (isValid_Wall(node, x,y,bit))
+    addWall(
 }
  
 bool exist_path(item * node, int x, int y, int bit))
