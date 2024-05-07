@@ -18,4 +18,3 @@ main: main.o Display.o struct.o
 
 clean:
 	rm -f *.o
-	
