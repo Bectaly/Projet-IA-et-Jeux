@@ -1,4 +1,5 @@
 #include "Display.hpp"
+#include "board.cpp"
 
 std::vector<Item*> astar(int id) {
     std::vector<Item*> reachableNodes;
@@ -99,7 +100,7 @@ int main()
   Game g(n,n);
   g.Run();
   item* node;
-  node = new_item ();
-  node->board = initboard( )
+  node = initGame();
+  cout << dfs (node->board, 0) << "voilà" << endl;
   return 0;
 }
