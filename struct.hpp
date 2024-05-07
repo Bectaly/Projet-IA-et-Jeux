@@ -13,7 +13,7 @@
 #define WIDTH 5
 #define HEIGHT 5
 
-#define WALL_INIT (int)(0.07*2*(2*WIDTH*HEIGHT - WIDTH - HEIGHT))
+#define WALL_INIT (int)(10/144*2*(2*WIDTH*HEIGHT - WIDTH - HEIGHT))
 
 using namespace std;
 
