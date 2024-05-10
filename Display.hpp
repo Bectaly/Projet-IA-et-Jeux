@@ -2,6 +2,7 @@
 #define _DISPLAY_H 
 
 #include "struct.hpp"
+#include "ia.hpp"
 
 class Player: public sf::Drawable{
 	private:
@@ -21,7 +22,7 @@ class Player: public sf::Drawable{
 		void init(int taille_tile,int id,string name);
 		void init(int taille_tile,int id,sf::Color color);
         Coord getCoord(){return coord;}
-        void set_coord(int x,int y);
+        void setCoord(int x,int y);
         void moveDir(int bit);
         void updatePosition();
 };
@@ -65,15 +66,18 @@ class Game{
         //player 
         Player p1,robot;
         int p1_id=0,robot_id=1;
+        bool tour=false,finish=false;
         //grille
         Grid grid;
         int taille_tile=100;
         int largeur,hauteur;
         int largeur_px,hauteur_px;
-        int x,y,nbr_wall=0,nbr_wall_max=10;
+        int x,y,nbr_wall_poser=0,nbr_wall_ini=0;
         Board board;
         vector<Wall*> walls;
         //function
+        void verif(int id);
+        void actionIA();
         int calc_dir(int x,int y,double xx,double yy);
         int event();
         void display();

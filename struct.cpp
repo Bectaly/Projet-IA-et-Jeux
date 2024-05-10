@@ -13,16 +13,44 @@ void define_Bit(){
 	Bit[3].y=0;	
 }
 
+void Board::setPlayer(Coord p1,int id,int nbr_wall){
+	player[id]=p1;
+	getTile(p1.x,p1.y)->player=id;
+	finishingline[1-id]=p1.x;
+	remainingwall[id]=nbr_wall;
+}
 
-Board::Board(int width, int height) { // Initialise un board vide, de dimension WIDTH*HEIGHT
+void Board::Set(int width, int height) { // Initialise un board vide, de dimension WIDTH*HEIGHT
 	this->width = width;
 	this->height = height;
 	board.resize(width*height);
 	player.resize(2);
+	
 	for(int i=0; i<width*height; i++){
 		Tile * t = new Tile;
 		t->walls.resize(4, false);
 		board[i] = t;
+	}
+}
+
+Coord Board::getPlayerPosition(int id){ return player[id];}
+
+void Board::copy(Board *b){
+	Tile* t1,*t2;
+	player[0]=b->getPlayerPosition(0);
+	player[1]=b->getPlayerPosition(1);
+	finishingline[0]=b->getFinishingLine(0);
+	finishingline[1]=b->getFinishingLine(1);
+	remainingwall[0]=b->getRemainingWall(0);
+	remainingwall[1]=b->getRemainingWall(1);
+
+	for(int x=0;x<width;x++){
+		for(int y=0;y<height;y++){
+			t1=getTile(x,y);
+			t2=b->getTile(x,y);
+			t1->player=t2->player;
+			t1->walls=t2->walls;
+		}
 	}
 }
 
@@ -49,6 +77,7 @@ bool Board::isMovePossible(int x, int y, int bit) { // Renvoie si le move dirig�
 }
 
 bool Board::isMovePossiblePlayer(int x, int y,int id) { // Renvoie si pos (x,y) a porter de player
+	if(!(x>=0 && x<width && y>=0 && y<height)) return false;
 	if(getTileId(x,y)!=-1)return false;
 	Tile * t=getTile(x,y);
 	for(int i=0;i<4;i++){
@@ -59,26 +88,26 @@ bool Board::isMovePossiblePlayer(int x, int y,int id) { // Renvoie si pos (x,y) 
 }
 
 bool Board::isMovePossiblePlayerDir(int bit,int id) {
-	return isMovePossiblePlayer(player[id].x+Bit[bit].x,player[id].y+Bit[bit].y,id);
+	
+	int x=player[id].x+Bit[bit].x, y=player[id].y+Bit[bit].y;
+	if(!(x>=0 && x<width && y>=0 && y<height)) return false;
+	if(getTileId(x,y)!=-1)return false;
+	return !(getTile(player[id].x, player[id].y)->walls[bit]);
 }
 
 void Board::moveTo(int x,int y,int id){
 	getTile(player[id].x,player[id].y)->player=-1;
 	getTile(x,y)->player=id;
-	player[id].set_coord(x,y);
+	player[id].setCoord(x,y);
 }	
 
 void Board::moveDir(int bit,int id){
-	int x=player[id].x,y=player[id].y;
-	getTile(x,y)->player=-1;
-	getTile(x+Bit[bit].x,y+Bit[bit].y)->player=id;
-	player[id].set_coord(x+Bit[bit].x,y+Bit[bit].y);
+	moveTo(player[id].x+Bit[bit].x,player[id].y+Bit[bit].y,id);
 }	
 
 vector<int> Board::possibleMoves(int x, int y) { // Renvoie un vecteur contenant les bits de direction possibles pour un mouvement depuis (x,y)
 	vector<int> moves;
 	int k = 1;
-	
 	for(int bit=0; bit<4; bit++) {
 		if(isMovePossible(x, y, bit)) {
 			moves.resize(k);
@@ -87,7 +116,6 @@ vector<int> Board::possibleMoves(int x, int y) { // Renvoie un vecteur contenant
 			
 		}
 	}
-
 	return moves;
 }
 
@@ -96,16 +124,17 @@ bool Board::getTileWall(int x, int y,int bit) {
 }
 
 bool Board::isWallValid(int x, int y,int bit){
-	if(x+Bit[bit].x<0 && bit==3)return false;
-	if(x+Bit[bit].x>=width && bit==1)return false;
-	if(y+Bit[bit].y<0 && bit==0)return false;
-	if(y+Bit[bit].y>=height && bit==2)return false;
-	return !getTileWall(x,y,bit);
+	if(!(x+Bit[bit].x>=0 && x+Bit[bit].x<width && y+Bit[bit].y>=0 && y+Bit[bit].y<height)) return false;
+	if(!(x+Bit[(bit%2)+1].x>=0 && x+Bit[(bit%2)+1].x<width && y+Bit[(bit%2)+1].y>=0 && y+Bit[(bit%2)+1].y<height)) return false;
+	if(!(x+Bit[bit].x+Bit[(bit%2)+1].x>=0 && x+Bit[bit].x+Bit[(bit%2)+1].x<width && y+Bit[bit].y+Bit[(bit%2)+1].y>=0 && y+Bit[bit].y+Bit[(bit%2)+1].y<height)) return false;
+	return !(getTileWall(x,y,bit) || getTileWall(x+Bit[(bit%2)+1].x,y+Bit[(bit%2)+1].y,bit));
 }
 
-void Board::addWall(int x, int y, int bit) { // Ajoute le mur sur les DEUX TILES mitoyennes concernées
+void Board::addWall(int x, int y, int bit) { // Ajoute le mur sur les TILES mitoyennes concernées
 	addOneWall(x, y, bit);
 	addOneWall(x+Bit[bit].x,y+Bit[bit].y,(bit+2)%4);
+	addOneWall(x+Bit[(bit%2)+1].x, y+Bit[(bit%2)+1].y, bit);
+	addOneWall(x+Bit[bit].x+Bit[(bit%2)+1].x,y+Bit[bit].y+Bit[(bit%2)+1].y,(bit+2)%4);
 }
 
 string conv(int val){

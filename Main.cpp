@@ -105,11 +105,7 @@ bool dfs(Board board, int id)
 
 int main()
 { 
-  int n=5;
-  Game g(n,n);
+  Game g(7,3);
   g.Run();
-  Item* node;
-  node = initGame();
-  cout << dfs (node->board, 0) << "voilà" << endl;
   return 0;
 }

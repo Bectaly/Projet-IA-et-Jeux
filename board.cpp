@@ -127,3 +127,60 @@ bool exist_path(Item * node, int x, int y, int bit)
        return 1;
   return 0;
 }
+
+#include "board.hpp"
+
+Item* newItemBoard(Board*b){
+  Item* tmp=new Item;
+  tmp->board=new Board;
+  tmp->board->Set(b->width,b->height);
+  tmp->board->copy(b);
+  tmp->depth=0;
+  tmp->f=0;
+  tmp->g=0;
+  tmp->h=0;
+  return tmp;
+}
+
+Item* nextItemBoard(Item*i,Board*b){
+  if(b==NULL) return NULL;
+  Item* tmp=new Item;
+  tmp->board=b;
+  tmp->depth=i->depth+1;
+  return tmp;
+}
+
+
+bool evaluateBoard(Board* board,int id){
+  return (board->getPlayerPosition(id)).x==board->getFinishingLine(id);
+}
+
+Board* getChildBoardActionMoveDir( Board *board,int id,int dir){
+  Board *child_p = NULL;
+  if ( board->isMovePossiblePlayerDir(dir,id)) {
+    child_p =new Board;
+    child_p->Set(board->width,board->height);
+    child_p->copy(board);
+    child_p->moveDir(dir,id);
+  }
+  return child_p;
+}
+
+Board* getChildBoardActionWallDir( Board *board,int x,int y,int dir,int id){
+  Board *child_p = NULL;
+  if ( board->isWallValid(x,y,dir)) {
+    child_p = new Board;
+    child_p->Set(board->width,board->height);
+    child_p->copy(board);
+    child_p->subWall(id);
+    child_p->addWall(x,y,dir);
+    if(Astar(child_p,0)>0 && Astar(child_p,1)>0){
+      return child_p;
+    }
+    else{
+      child_p->Delete();
+      delete child_p; 
+    }
+  }
+  return NULL;
+}

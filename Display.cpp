@@ -1,5 +1,4 @@
-#include "display.hpp"
-#include "struct.hpp"
+#include "Display.hpp"
 
 void Grid::set(int taille,int largeur,int hauteur){
     taille_tile=taille;
@@ -39,7 +38,7 @@ Wall::Wall(int taille,int x,int y,int dir,string name){
     if (texture.loadFromFile(name)){    
         sprite.setTexture(texture);
         size=texture.getSize();
-        sprite.setScale((double)epaisseur/size.x,(double)taille/size.y);
+        sprite.setScale((double)epaisseur/size.x,(double)taille*2/size.y);
         sp=true;
         if(Bit[dir].y!=0)sprite.setRotation(-90);
         int decal_x=0,decal_y=0;
@@ -74,12 +73,12 @@ void Player::init(int taille_tile,int id,string name){
     }
 }
 
-void Player::set_coord(int x,int y){
-    coord.set_coord(x,y);
+void Player::setCoord(int x,int y){
+    coord.setCoord(x,y);
 }
 
 void Player::moveDir(int bit){
-    coord.set_coord(coord.x+Bit[bit].x,coord.y+Bit[bit].y);
+    coord.setCoord(coord.x+Bit[bit].x,coord.y+Bit[bit].y);
 }
 
 void Player::updatePosition() {
@@ -90,9 +89,8 @@ void Player::updatePosition() {
 Game::Game(int largeur,int hauteur){
     //bit
     define_Bit();
-
     //init
-    board =Board(largeur,hauteur);
+    board.Set(largeur,hauteur);
     this->hauteur=hauteur;
     this->largeur=largeur;
     largeur_px=largeur*taille_tile;
@@ -104,18 +102,24 @@ Game::Game(int largeur,int hauteur){
 
     //init player
     p1.init(taille_tile,0,"./image/p1.png");
-    p1.set_coord(0,hauteur/2);
+    p1.setCoord(0,hauteur/2);
     p1.updatePosition();
-    board.setcoord(p1.getCoord(),0);
-
+    board.setPlayer(p1.getCoord(),0,nbr_wall_ini);
+    
     robot.init(taille_tile,1,"./image/robot.png");
-    robot.set_coord(largeur-1,hauteur/2);
+    robot.setCoord(largeur-1,hauteur/2);
     robot.updatePosition();
-    board.setcoord(robot.getCoord(),1);
+    board.setPlayer(robot.getCoord(),1,nbr_wall_ini);
 
     //init wall
-    walls.resize(nbr_wall_max,NULL);
+    walls.resize(nbr_wall_ini*2,NULL);
 
+}
+
+void Game::verif(int id){
+    if(evaluateBoard(&board,id)){
+        finish=true;
+    }
 }
 
 int Game::calc_dir(int x,int y,double xx,double yy){
@@ -128,11 +132,34 @@ int Game::calc_dir(int x,int y,double xx,double yy){
     return -1;
 }
 
+void Game::actionIA(){
+    if(tour){
+        
+        Action * tmp=negamax(&board,2);
+        if(tmp!=NULL){ 
+            tour=false;
+            if(tmp->move){
+                board.moveDir(tmp->dir,1);
+                robot.moveDir(tmp->dir);
+                robot.updatePosition();
+            }
+            else{
+                walls[nbr_wall_poser]=new Wall(taille_tile,tmp->coord.x,tmp->coord.y,tmp->dir,"./image/wall.png");
+                board.addWall(tmp->coord.x,tmp->coord.y,tmp->dir);
+                board.subWall(1);
+                nbr_wall_poser++;
+            }
+            verif(1);
+        }
+        else cout<<"erreur"<<endl;
+    }
+}
+
 int Game::event(){
     sf::Event event;
     while (window.pollEvent(event))
     {
-        if ( event.type == sf::Event::Closed){
+        if ( event.type == sf::Event::Closed || finish){
             window.close();
             return 0;
         }
@@ -140,26 +167,36 @@ int Game::event(){
     if (event.type == sf::Event::Resized) {
        window.setSize(sf::Vector2u(largeur_px,hauteur_px));
     }
+    
+    actionIA();
     if(event.type == sf::Event::MouseButtonPressed){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             position=sf::Mouse::getPosition(window);
             Coord c=p1.getCoord();
-            int dir=calc_dir(c.x,c.y,position.x/(double)taille_tile,position.y/(double)taille_tile);
-            if(board.isMovePossiblePlayerDir(dir,p1.id)){
-                board.moveDir(dir,p1.id);
-                p1.moveDir(dir);
-                p1.updatePosition();
+            x=position.x/taille_tile;
+            y=position.y/taille_tile;
+            if(!(c.x==x && c.y==y)){
+                int dir=calc_dir(c.x,c.y,position.x/(double)taille_tile,position.y/(double)taille_tile);
+                if(board.isMovePossiblePlayerDir(dir,p1.id)){
+                    board.moveDir(dir,p1.id);
+                    p1.moveDir(dir);
+                    p1.updatePosition();
+                    verif(0);
+                    tour=true;
+                }
             }
         }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)){
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && board.getRemainingWall(0)>0){
             position=sf::Mouse::getPosition(window);
             x=position.x/taille_tile;
             y=position.y/taille_tile;
             int dir=calc_dir(x,y,position.x/(double)taille_tile,position.y/(double)taille_tile);
-            if(dir !=-1 && p1.nbr_wall<nbr_wall_max && board.isWallValid(x,y,dir)){
-                walls[nbr_wall]=new Wall(taille_tile,x,y,dir,"./image/wall.png");
+            if(dir !=-1 && board.isWallValid(x,y,dir)){
+                walls[nbr_wall_poser]=new Wall(taille_tile,x,y,dir,"./image/wall.png");
+                board.subWall(0);
                 board.addWall(x,y,dir);
-                nbr_wall++;
+                nbr_wall_poser++;
+                tour=true;
             }
         }
     }
@@ -171,13 +208,10 @@ void Game::display(){
     window.draw(p1);
     window.draw(robot);
     window.draw(grid);
-    for(int i=0;i<nbr_wall;i++){
+    for(int i=0;i<nbr_wall_poser;i++){
         window.draw(*walls[i]);
     }
-    
-
     window.display();
-
 }
 
 void Game::Run(){
