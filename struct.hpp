@@ -74,4 +74,5 @@ typedef struct Item_s {
 
 void printBoard(Board& b);
 void printBoardWall(Board& b,int bit);
+
 #endif
