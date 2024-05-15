@@ -79,6 +79,7 @@ double geHeuristicnegamax(Board* board, int id) {
     score += myPaths * 3;
     opponentScore += oppPaths * 3;
 
+    /*
     // 3. Capacité à bloquer l'adversaire
     if (oppPaths < 2) {
         opponentScore += 50; // Bonus si l'adversaire a très peu de mouvements possibles
@@ -113,10 +114,10 @@ double geHeuristicnegamax(Board* board, int id) {
     if (board->getTileWall(myPos.x, myPos.y, 1) && board->getTileWall(myPos.x + 1, myPos.y, 1)) {
         score += 20; // Bonus pour renforcer les défenses
     }
+    */
 
     return score - opponentScore;
 }
-
 
 vector<Coord> getSurroundingCoords(Coord pos, int width, int height, int n) {
     vector<Coord> coords;
