@@ -66,7 +66,7 @@ class Game{
         //player 
         Player p1,robot;
         int p1_id=0,robot_id=1;
-        bool tour=false,finish=false;
+        bool tour=true,finish=false;
         //grille
         Grid grid;
         int taille_tile=100;
