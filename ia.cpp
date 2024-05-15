@@ -62,6 +62,7 @@ int evaluateStrategicConfiguration(Board* board, int playerId) {
     return strategicValue;
 }
 
+
 double geHeuristicnegamax(Board* board, int id) {
     double score = 0;
     double opponentScore = 0;
@@ -115,6 +116,7 @@ double geHeuristicnegamax(Board* board, int id) {
 
     return score - opponentScore;
 }
+
 
 vector<Coord> getSurroundingCoords(Coord pos, int width, int height, int n) {
     vector<Coord> coords;
