@@ -39,7 +39,7 @@ Board* getChildBoardActionMoveDir( Board *board,int id,int dir){
     child_p->copy(board);
     child_p->moveDir(dir,id);
     //if(Bit[dir].x!=0) board->setDistance(id,board->getDistance(id)+Bit[dir].x);
-    board->setDistance(id,board->getDistance(id)+Bit[dir].x);
+    board->setDistance(id,board->getDistance(id)+Bit[dir].x-1);
   }
   return child_p;
 }

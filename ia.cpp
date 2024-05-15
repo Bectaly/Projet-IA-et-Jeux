@@ -13,6 +13,7 @@ void remplace(List& list, Item *child_p ,Item * temp){
   }
 }
 
+
 int getHeuristicAstar( Item *node, int id) {//calculs la distance a une possible solution
   return abs(node->board->getFinishingLine(id)-node->board->getPlayerPosition(id).x);
 }
