@@ -137,7 +137,10 @@ int Game::calc_dir(int x,int y,double xx,double yy){
 
 void Game::actionIA(){
     if(tour){
-        
+
+        cout << "ma distance : " << (&board)->getDistance(0) << endl;
+        cout << "sa distance : " << (&board)->getDistance(1) << endl;
+
         Action * tmp=negamax(&board, 3);
         if(tmp!=NULL){ 
             tour=false;
@@ -172,6 +175,7 @@ int Game::event(){
     }
     
     actionIA();
+
     if(event.type == sf::Event::MouseButtonPressed){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             position=sf::Mouse::getPosition(window);
