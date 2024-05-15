@@ -195,11 +195,17 @@ int Game::event(){
             y=position.y/taille_tile;
             int dir=calc_dir(x,y,position.x/(double)taille_tile,position.y/(double)taille_tile);
             if(dir !=-1 && board.isWallValid(x,y,dir)){
-                walls[nbr_wall_poser]=new Wall(taille_tile,x,y,dir,"./image/wall.png");
-                board.subWall(0);
-                board.addWall(x,y,dir);
-                nbr_wall_poser++;
-                tour=true;
+                Board* test;
+                test=getChildBoardActionWallDir(&board,x,y,dir,0);
+                if(test!=NULL){
+                    test->Delete();
+                    delete test;
+                    walls[nbr_wall_poser]=new Wall(taille_tile,x,y,dir,"./image/wall.png");
+                    board.subWall(0);
+                    board.addWall(x,y,dir);
+                    nbr_wall_poser++;
+                    tour=true;
+                }
             }
         }
     }
