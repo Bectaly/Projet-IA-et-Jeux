@@ -1,4 +1,5 @@
 #include "ia.hpp"
+#include <iostream>
 
 void remplace(List& list, Item *child_p ,Item * temp){
   if(temp==NULL){
@@ -114,8 +115,7 @@ double geHeuristicnegamax(Board* board, int id) {
 
     return score - opponentScore;
 }
-
-
+<
 vector<Coord> getSurroundingCoords(Coord pos, int width, int height, int n) {
     vector<Coord> coords;
     for (int dx = -n; dx <= n; ++dx) {
@@ -129,6 +129,7 @@ vector<Coord> getSurroundingCoords(Coord pos, int width, int height, int n) {
     }
     return coords;
 }
+
 Action* negamax(Board *board, int depth, double alpha, double beta, int id) {
     Board *child;
     Action* best = new Action;
