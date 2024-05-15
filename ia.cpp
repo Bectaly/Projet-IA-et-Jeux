@@ -115,7 +115,7 @@ double geHeuristicnegamax(Board* board, int id) {
 
     return score - opponentScore;
 }
-<
+
 vector<Coord> getSurroundingCoords(Coord pos, int width, int height, int n) {
     vector<Coord> coords;
     for (int dx = -n; dx <= n; ++dx) {
