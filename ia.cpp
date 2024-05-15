@@ -73,13 +73,13 @@ double geHeuristicnegamax(Board* board, int id) {
     score += (myDistance == 0) ? 1000 : -myDistance * 10;
     opponentScore += (oppDistance == 0) ? 1000 : -oppDistance * 10;
 
+    /*
     // 2. Nombre de chemins ouverts et leur longueur
     int myPaths = countMovementOptions(board, id);
     int oppPaths = countMovementOptions(board, 1 - id);
     score += myPaths * 3;
     opponentScore += oppPaths * 3;
 
-    /*
     // 3. Capacité à bloquer l'adversaire
     if (oppPaths < 2) {
         opponentScore += 50; // Bonus si l'adversaire a très peu de mouvements possibles
@@ -118,6 +118,7 @@ double geHeuristicnegamax(Board* board, int id) {
 
     return score - opponentScore;
 }
+
 
 vector<Coord> getSurroundingCoords(Coord pos, int width, int height, int n) {
     vector<Coord> coords;
