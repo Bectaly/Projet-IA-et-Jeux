@@ -111,13 +111,16 @@ Game::Game(int largeur,int hauteur){
     robot.updatePosition();
     board.setPlayer(robot.getCoord(),1,nbr_wall_ini);
 
+    board.setDistance(0,largeur);
+    board.setDistance(1,largeur);
+
     //init wall
     walls.resize(nbr_wall_ini*2,NULL);
 
 }
 
 void Game::verif(int id){
-    if(evaluateBoard(&board,id)){
+    if(evaluateBoardId(&board,id)){
         finish=true;
     }
 }
@@ -135,7 +138,7 @@ int Game::calc_dir(int x,int y,double xx,double yy){
 void Game::actionIA(){
     if(tour){
         
-        Action * tmp=negamax(&board,2);
+        Action * tmp=negamax(&board,3);
         if(tmp!=NULL){ 
             tour=false;
             if(tmp->move){

@@ -38,10 +38,15 @@ class Board{
 	  vector<Coord> player;
 	  int finishingline[2];
 	  int remainingwall[2];
+	  int distanceplayer[4];
 
 	public:
 		int width, height;
+
 		void Set(int width, int height); // Initialise un board vide, de dimension WIDTH*HEIGHT
+		void setDistance(int id,int val){distanceplayer[id]=val;}
+		int getDistanceDiff(int id){return distanceplayer[id+2]-distanceplayer[id];}
+		int getDistance(int id){return distanceplayer[id];}
 		void Delete() {
 			for(int i=0;i<width*height;i++){
 				delete board[i];

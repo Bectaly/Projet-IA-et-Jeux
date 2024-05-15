@@ -26,6 +26,7 @@ void Board::Set(int width, int height) { // Initialise un board vide, de dimensi
 	board.resize(width*height);
 	player.resize(2);
 	
+	
 	for(int i=0; i<width*height; i++){
 		Tile * t = new Tile;
 		t->walls.resize(4, false);
@@ -43,6 +44,8 @@ void Board::copy(Board *b){
 	finishingline[1]=b->getFinishingLine(1);
 	remainingwall[0]=b->getRemainingWall(0);
 	remainingwall[1]=b->getRemainingWall(1);
+	setDistance(2,b->getDistance(0));
+	setDistance(3,b->getDistance(1));
 
 	for(int x=0;x<width;x++){
 		for(int y=0;y<height;y++){

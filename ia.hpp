@@ -3,8 +3,8 @@
 
 #include "board.hpp"
 
-#define inf 100000
-#define ninf -100000
+#define inf 1000000
+#define ninf -1000000
 
 
 void remplace(List& list, Item *child_p ,Item * temp);

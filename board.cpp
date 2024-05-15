@@ -1,133 +1,3 @@
-#include <cstdio.h>
-#include <iostream>
-#include "board.hpp"
-
-Item * initBoard (Item * node, Board board) 
-{
-  assert( node );
-  for(int i=0;i<(WIDTH * HEIGHT);i++)
-  {
-      node->board[i]=board[i];
-  }
-}
-
-Item *new_item()
-{
-  Item *node;
-
-  node = (Item *) malloc( sizeof(Item) );
-  assert(node);
-  Board board();
-  node->board = board;
-  node->parent = NULL;
-  node->depth= 0;
-  node->f = node->g = node->h = (double)0.0;
-
-  return node;
-}
-
-
-Item * initGame()
-{
-  int x=WIDTH;
-  int y=HEIGHT;
-  int size= x*y;
-  int i;
-  Item *node;
-//initialise le vecteur 
-  Board initial ();
-  for (int i=0; i<size; i++) 
-  {
-    initial[i] = 0;
-  }
-  x=w/2;
-  for (id=0; id<2; id=id+1)
-  {
-    initial->set(x,y*id,id+1);
-  }
-  node = new_item();
-  initBoard(node, initial);
-  node->depth = 0;
-  return node;
-}
-
-
-void printBoard(Item * node)
-{
-  assert(node);
-  printf("\n");
-  for (int j=0; j<WIDTH; j++) if (j==0) printf(" ___"); else printf("____"); printf("\n");
-  for (int i = 0 ; i < WIDTH*HEIGHT ; i++) {
-    if (i%WIDTH == 0) printf("|");
-    if (node->board[i] == 0) printf("   |");
-    else printf("%2d |", node->board[i]);
-    if (((i+1)%WIDTH) == 0) {
-      printf("\n");
-      for (int j=0; j<WIDTH; j++) if (j==0) printf(" ___"); else printf("____"); printf("\n");
-    }
-  }
-  printf("\n");
-}
-
-
-double evaluateBoard(Item * node) 
-{
-    int j;
-    int id;
-    for (id=0; id<2; id=id+1)
-    {
-        for (j=0; j<WIDTH; j=j+1)
-        {
-           if ((node->board).getPlayerPosition (id) == node->board[j][id*HEIGHT])
-           {
-               cout << "Le joueur " << id << "à gagné !!" << endl;
-               return 1;
-           }
-        }
-    }
-    return 0;
-}
-
-bool isValid_Wall (Item *node, int x, int y, int bit)
-{
-  if (exist_path(node,x,y,bit))
-  {
-    return 1;
-  }
-  return 0;
-}
-
-
-Item *getChildBoard( Item *node,int bit, int id )
-{
-    Item *child_p = NULL;
-    if ( isMovePossiblePlayerDir (bit,id) )
-    {
-         /* allocate and init child node */
-      child_p=new_item();
-      initBoard (child_p, node->board);
-        /* Make move */
-      child_p->parent=node;
-      child_p->depth=node->depth+1;
-      child_p->f= child_p->depth;
-      moveDir (bit,id);
-    }
-   return child_p;
-}
-
-void placeWall(int x, int y, int bit)
-{
-  if (isValid_Wall(node, x,y,bit))
-    Board::addWall(x,y,bit);
-}
- 
-bool exist_path(Item * node, int x, int y, int bit)
-{
-   if (dfs ( node->board,0) && dfs (node->board, 1))
-       return 1;
-  return 0;
-}
-
 #include "board.hpp"
 
 Item* newItemBoard(Board*b){
@@ -151,8 +21,14 @@ Item* nextItemBoard(Item*i,Board*b){
 }
 
 
-bool evaluateBoard(Board* board,int id){
+bool evaluateBoardId(Board* board,int id){
   return (board->getPlayerPosition(id)).x==board->getFinishingLine(id);
+}
+
+bool evaluateBoard(Board* board){
+  bool b=(board->getPlayerPosition(0)).x==board->getFinishingLine(0);
+  b=b || (board->getPlayerPosition(1)).x==board->getFinishingLine(1);
+  return b;
 }
 
 Board* getChildBoardActionMoveDir( Board *board,int id,int dir){
@@ -162,6 +38,7 @@ Board* getChildBoardActionMoveDir( Board *board,int id,int dir){
     child_p->Set(board->width,board->height);
     child_p->copy(board);
     child_p->moveDir(dir,id);
+    if(Bit[dir].x!=0) board->setDistance(id,board->getDistance(id)+Bit[dir].x);
   }
   return child_p;
 }
@@ -169,12 +46,17 @@ Board* getChildBoardActionMoveDir( Board *board,int id,int dir){
 Board* getChildBoardActionWallDir( Board *board,int x,int y,int dir,int id){
   Board *child_p = NULL;
   if ( board->isWallValid(x,y,dir)) {
+    int da,db;
     child_p = new Board;
     child_p->Set(board->width,board->height);
     child_p->copy(board);
     child_p->subWall(id);
     child_p->addWall(x,y,dir);
-    if(Astar(child_p,0)>0 && Astar(child_p,1)>0){
+    da=Astar(child_p,0);
+    db=Astar(child_p,1);
+    if(da>0 && db>0){
+      child_p->setDistance(0,da);
+      child_p->setDistance(1,db);
       return child_p;
     }
     else{

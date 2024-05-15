@@ -27,3 +27,4 @@ main: main.o Display.o struct.o ia.o board.o List.o
 
 clean:	
 	rm -f *.o
+	
