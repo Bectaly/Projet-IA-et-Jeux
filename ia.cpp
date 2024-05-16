@@ -13,6 +13,7 @@ void remplace(List& list, Item *child_p ,Item * temp){
   }
 }
 
+
 int getHeuristicAstar( Item *node, int id) {//calculs la distance a une possible solution
   return abs(node->board->getFinishingLine(id)-node->board->getPlayerPosition(id).x);
 }
@@ -62,6 +63,7 @@ int evaluateStrategicConfiguration(Board* board, int playerId) {
     return strategicValue;
 }
 
+
 double geHeuristicnegamax(Board* board, int id) {
     double score = 0;
     double opponentScore = 0;
@@ -72,6 +74,7 @@ double geHeuristicnegamax(Board* board, int id) {
     score += (myDistance == 0) ? 1000 : -myDistance * 10;
     opponentScore += (oppDistance == 0) ? 1000 : -oppDistance * 10;
 
+    /*
     // 2. Nombre de chemins ouverts et leur longueur
     int myPaths = countMovementOptions(board, id);
     int oppPaths = countMovementOptions(board, 1 - id);
@@ -112,9 +115,11 @@ double geHeuristicnegamax(Board* board, int id) {
     if (board->getTileWall(myPos.x, myPos.y, 1) && board->getTileWall(myPos.x + 1, myPos.y, 1)) {
         score += 20; // Bonus pour renforcer les défenses
     }
+    */
 
     return score - opponentScore;
 }
+
 
 vector<Coord> getSurroundingCoords(Coord pos, int width, int height, int n) {
     vector<Coord> coords;

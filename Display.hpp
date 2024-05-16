@@ -64,8 +64,8 @@ class Game{
         sf::Vector2i position;
         //player 
         Player p1,robot;
-        int p1_id=0,robot_id=1,difi;
-        bool tour=false,finish=false;
+        int p1_id=0,robot_id=1;
+        bool tour=true,finish=false;
         //grille
         Grid grid;
         int taille_tile=100;

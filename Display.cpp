@@ -185,7 +185,7 @@ int Game::calc_dir(int x,int y,double xx,double yy){
 void Game::actionIA(){
     if(tour){
         
-        Action * tmp=negamax(&board,difi);
+        Action * tmp=negamax(&board,3);
         if(tmp!=NULL){ 
             tour=false;
             if(tmp->move){
@@ -220,6 +220,7 @@ int Game::event(){
     }
     
     actionIA();
+
     if(event.type == sf::Event::MouseButtonPressed){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             position=sf::Mouse::getPosition(window);
