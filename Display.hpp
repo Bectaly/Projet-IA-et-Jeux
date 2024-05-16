@@ -1,7 +1,6 @@
 #ifndef _DISPLAY_H
 #define _DISPLAY_H 
 
-#include "struct.hpp"
 #include "ia.hpp"
 
 class Player: public sf::Drawable{
@@ -65,14 +64,14 @@ class Game{
         sf::Vector2i position;
         //player 
         Player p1,robot;
-        int p1_id=0,robot_id=1;
-        bool tour=true,finish=false;
+        int p1_id=0,robot_id=1,difi;
+        bool tour=false,finish=false;
         //grille
         Grid grid;
         int taille_tile=100;
         int largeur,hauteur;
         int largeur_px,hauteur_px;
-        int x,y,nbr_wall_poser=0,nbr_wall_ini=5;
+        int x,y,nbr_wall_poser=0,nbr_wall_ini;
         Board board;
         vector<Wall*> walls;
         //function
@@ -83,9 +82,104 @@ class Game{
         void display();
 
     public:
-        Game(int largeur=5,int hauteur=10);
+        void set(int largeur=5,int hauteur=10,int nbr_wall=5,int difi=3);
         void Run();
+        void Delete();
+};
+
+class Fond: public sf::Drawable{
+    private:
+        sf::Texture back;
+        sf::Sprite background;
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
+            target.draw(background, states);
+        }
+
+    public:
+        void set(string name,int largeur,int hauteur);
+
+};
+
+class Texte: public sf::Drawable{
+    private:
+        sf::Text text;
+        sf::Color color;
+        int xx,yy;
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
+            target.draw(text, states);
+        }
+
+    public:
+        void set(string str, sf::Font& font,int z,int x,int y);
+        void set_text(string tex);
+};
+
+class Bouton : public sf::Drawable {
+    private:
+        sf::Text text;
+        sf::RectangleShape rec;
+        sf::Color cool;
+        sf::Color surcool;
+        sf::Color select;
+        static int cocher;
+        int id;
+
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
+            target.draw(rec, states);
+            target.draw(text, states);
+        }
+
+    public:
+        Bouton();
+        void setId(int id=-2);
+        int getCocher();
+        void set_bouton(const std::string& str, sf::Font& font, int largeur, int hauteur, float x, float y);
+        void set_fleche(const std::string& str, sf::Font& font, int size, float x, float y);
+        bool isHover(const sf::RenderWindow& window);
+        bool isClick(const sf::RenderWindow& window,bool o=false);
+        void update(const sf::RenderWindow& window);
+};
+
+
+
+class Menu {
+    private:
+        sf::RenderWindow window;
+        sf::VideoMode fenetre;
+
+        Fond FondMenu,FondOption;
+
+        Game* g;
+        const int largeurmenu = 800;
+        const int hauteurmenu = 600;
+        int taille_fleche=40;
+        int hauteur_bouton=50;
+        int largeur_bouton=200;
+        bool option=false;
+        sf::Font font;
+
+        //pour le menu
+        Texte T_Titre_Jeu;
+        Bouton playButton,optionsButton,quitButton;
+
+        //pour les param
+        Bouton flecheup,flechedown,retourButton;
+        Bouton B_Largeur,B_Hauteur,B_nbrMur,B_dific;
+        Texte T_Titre_Params,T_Largeur,T_Hauteur,T_nbrMur,T_dific;
         
+
+        int largeur=5,hauteur=5,nbrMur=int(0.07*(2*largeur*hauteur-hauteur*largeur)),dific=3;
+
+        void updateOption();
+        void isClickiOption();
+        void updateMenu();
+        void isClickiMenu();
+        void creerwindow();
+        void displayMenu();
+        void displayOption();
+    public:
+        Menu();
+        int start();
 };
 
 #endif 
