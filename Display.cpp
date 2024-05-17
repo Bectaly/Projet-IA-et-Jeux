@@ -185,7 +185,7 @@ int Game::calc_dir(int x,int y,double xx,double yy){
 void Game::actionIA(){
     if(tour){
         
-        Action * tmp=negamax(&board,3);
+        Action * tmp=negamax(&board,difi);
         if(tmp!=NULL){ 
             tour=false;
             if(tmp->move){

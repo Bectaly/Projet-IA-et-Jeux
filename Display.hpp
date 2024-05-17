@@ -71,7 +71,7 @@ class Game{
         int taille_tile=100;
         int largeur,hauteur;
         int largeur_px,hauteur_px;
-        int x,y,nbr_wall_poser=0,nbr_wall_ini;
+        int x,y,nbr_wall_poser=0,nbr_wall_ini,difi;
         Board board;
         vector<Wall*> walls;
         //function
