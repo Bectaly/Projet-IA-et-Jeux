@@ -57,36 +57,6 @@ class Wall: public sf::Drawable{
         }
 };
 
-class Game{
-    private:
-        //window
-        sf::RenderWindow window;
-        sf::Vector2i position;
-        //player 
-        Player p1,robot;
-        int p1_id=0,robot_id=1;
-        bool tour=true,finish=false;
-        //grille
-        Grid grid;
-        int taille_tile=100;
-        int largeur,hauteur;
-        int largeur_px,hauteur_px;
-        int x,y,nbr_wall_poser=0,nbr_wall_ini,difi;
-        Board board;
-        vector<Wall*> walls;
-        //function
-        void verif(int id);
-        void actionIA();
-        int calc_dir(int x,int y,double xx,double yy);
-        int event();
-        void display();
-
-    public:
-        void set(int largeur=5,int hauteur=10,int nbr_wall=5,int difi=3);
-        void Run();
-        void Delete();
-};
-
 class Fond: public sf::Drawable{
     private:
         sf::Texture back;
@@ -112,6 +82,42 @@ class Texte: public sf::Drawable{
     public:
         void set(string str, sf::Font& font,int z,int x,int y);
         void set_text(string tex);
+};
+
+class Game{
+    private:
+        //window
+        sf::RenderWindow window;
+        sf::Vector2i position;
+        Fond F_jeu;
+        //texte
+        int T_size=30;
+        Texte T_IA,T_Pl,T_fini;
+
+        //player 
+        Player p1,robot;
+        int p1_id=0,robot_id=1,difi;
+        bool tour=false,finish=false;
+        //grille
+        Grid grid;
+        int taille_tile=100;
+        int largeur,hauteur;
+        int largeur_px,hauteur_px;
+        int x,y,nbr_wall_poser=0,nbr_wall_ini;
+        Board board;
+        vector<Wall*> walls;
+        //function
+        void verif(int id);
+        void actionIA();
+        int calc_dir(int x,int y,double xx,double yy);
+        int event();
+        void display();
+        void displayFini(int id);
+
+    public:
+        void set(sf::Font& font,int largeur=5,int hauteur=10,int nbr_wall=5,int difi=3);
+        void Run();
+        void Delete();
 };
 
 class Bouton : public sf::Drawable {
@@ -150,8 +156,8 @@ class Menu {
         Fond FondMenu,FondOption;
 
         Game* g;
-        const int largeurmenu = 800;
-        const int hauteurmenu = 600;
+        int largeurmenu;
+        int hauteurmenu;
         int taille_fleche=40;
         int hauteur_bouton=50;
         int largeur_bouton=200;
@@ -169,7 +175,6 @@ class Menu {
         
 
         int largeur=5,hauteur=5,nbrMur=int(0.07*(2*largeur*hauteur-hauteur*largeur)),dific=3;
-
         void updateOption();
         void isClickiOption();
         void updateMenu();
@@ -178,7 +183,7 @@ class Menu {
         void displayMenu();
         void displayOption();
     public:
-        Menu();
+        Menu(int largeurmenu=800, int hauteurmenu=600);
         int start();
 };
 

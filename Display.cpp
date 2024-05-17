@@ -2,7 +2,7 @@
 
 void Grid::set(int taille,int largeur,int hauteur){
     taille_tile=taille;
-    hlines =sf::VertexArray(sf::Lines, hauteur*2);
+    hlines =sf::VertexArray(sf::Lines, (hauteur+1)*2);
     vlines =sf::VertexArray(sf::Lines, largeur*2);
     int p=0;
     for(int i=0;i<largeur;i++){
@@ -11,7 +11,7 @@ void Grid::set(int taille,int largeur,int hauteur){
         p+=2;
     }
     p=0;
-    for(int i=0;i<hauteur;i++){
+    for(int i=0;i<=hauteur;i++){
         hlines[p].position = sf::Vector2f(0,i*taille_tile);
         hlines[p+1].position = sf::Vector2f(largeur*taille_tile, i*taille_tile);
         p+=2;
@@ -128,7 +128,7 @@ void Game::Delete(){
     
 }
 
-void Game::set(int largeur,int hauteur,int nbr_wall,int difi){
+void Game::set(sf::Font& font,int largeur,int hauteur,int nbr_wall,int difi){
     //bit
     define_Bit();
     //init
@@ -139,7 +139,12 @@ void Game::set(int largeur,int hauteur,int nbr_wall,int difi){
     nbr_wall_ini=nbr_wall;
 
     largeur_px=largeur*taille_tile;
-    hauteur_px=hauteur*taille_tile;
+    hauteur_px=hauteur*taille_tile+T_size+10;
+    
+    //fond
+    F_jeu.set("./image/jeu.png",largeur_px,hauteur_px);
+
+
     //init window
     window.create(sf::VideoMode(largeur_px,hauteur_px),"Quoridor",sf::Style::Titlebar | sf::Style::Close);
     sf::VideoMode fenetre = sf::VideoMode::getDesktopMode();
@@ -163,11 +168,26 @@ void Game::set(int largeur,int hauteur,int nbr_wall,int difi){
 
     //init wall
     walls.resize(nbr_wall_ini*2,NULL);
+    
+    //set text
+    T_Pl.set("Murs Player:"+to_string(nbr_wall_ini),font,T_size,largeur_px/5,hauteur_px-T_size/2);
+    T_IA.set("Murs IA:"+to_string(nbr_wall_ini),font,T_size,largeur_px/5*4,hauteur_px-T_size/2);
+    T_fini.set("",font,70,largeur_px/2,hauteur_px/2);
 
+}
+
+void Game::displayFini(int id){
+    T_fini.set_text((id==0)?"VICTOIRE":"DEFAITE");
+    window.clear();
+    window.draw(F_jeu);
+    window.draw(T_fini);
+    window.display();
+    sf::sleep(sf::seconds(2));
 }
 
 void Game::verif(int id){
     if(evaluateBoardId(&board,id)){
+        displayFini(id);
         finish=true;
     }
 }
@@ -198,6 +218,7 @@ void Game::actionIA(){
                 board.addWall(tmp->coord.x,tmp->coord.y,tmp->dir);
                 board.subWall(1);
                 nbr_wall_poser++;
+                T_IA.set_text("Murs IA:"+to_string(board.getRemainingWall(1)));
             }
             verif(1);
         }
@@ -220,7 +241,6 @@ int Game::event(){
     }
     
     actionIA();
-
     if(event.type == sf::Event::MouseButtonPressed){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             position=sf::Mouse::getPosition(window);
@@ -253,6 +273,7 @@ int Game::event(){
                     board.subWall(0);
                     board.addWall(x,y,dir);
                     nbr_wall_poser++;
+                    T_Pl.set_text("Murs Player:"+to_string(board.getRemainingWall(0)));
                     tour=true;
                 }
             }
@@ -263,6 +284,12 @@ int Game::event(){
 
 void Game::display(){
     window.clear();
+    //affiche fond
+    window.draw(F_jeu);
+    //affiche texte
+    window.draw(T_IA);
+    window.draw(T_Pl);
+    //afiche plateau
     window.draw(p1);
     window.draw(robot);
     window.draw(grid);
@@ -406,7 +433,11 @@ void Bouton::update(const sf::RenderWindow& window) {
 
 
 
-Menu::Menu() {
+
+Menu::Menu(int largeurmenu, int hauteurmenu) {
+    this->largeurmenu=largeurmenu;
+    this->hauteurmenu=hauteurmenu;
+
     fenetre = sf::VideoMode::getDesktopMode();
     if (!font.loadFromFile("arial.ttf")) {
         std::cerr << "Erreur de chargement" << std::endl;
@@ -495,7 +526,7 @@ void Menu::isClickiMenu(){
     if (playButton.isClick(window)) {
         window.close();
         g=new Game();
-        g->set(largeur, hauteur, nbrMur, dific);
+        g->set(font,largeur, hauteur, nbrMur, dific);
         g->Run();
         g->Delete();
         delete g;
