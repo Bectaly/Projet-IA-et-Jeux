@@ -85,7 +85,7 @@ class Board{
 
 typedef struct _Action {
 	bool move;
-	int dir;
+	int dir,DIA,DPL;
 	double cout;
 	Coord coord;
 } Action;
