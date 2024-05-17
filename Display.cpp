@@ -203,7 +203,7 @@ int Game::calc_dir(int x,int y,double xx,double yy){
 }
 
 void Game::actionIA(){
-    if(tour){
+    if(tour ){
         
         Action * tmp=negamax(&board,difi);
         if(tmp!=NULL){ 
@@ -216,11 +216,16 @@ void Game::actionIA(){
             else{
                 walls[nbr_wall_poser]=new Wall(taille_tile,tmp->coord.x,tmp->coord.y,tmp->dir,"./image/wall.png");
                 board.addWall(tmp->coord.x,tmp->coord.y,tmp->dir);
-                board.subWall(1);
+                board.subWall(1);   
                 nbr_wall_poser++;
                 T_IA.set_text("Murs IA:"+to_string(board.getRemainingWall(1)));
             }
+            board.setDistance(0,tmp->DPL);
+            board.setDistance(1,tmp->DIA);
             verif(1);
+            cout<<"tour IA"<<endl;
+            cout<<"Joueur: "<<board.getPlayerPosition(0).x<<";"<<board.getPlayerPosition(0).y<<" -> "<<board.getDistance(0)<<endl;
+            cout<<"IA: "<<board.getPlayerPosition(1).x<<";"<<board.getPlayerPosition(1).y<<" -> "<<board.getDistance(1)<<endl;
         }
         else cout<<"erreur"<<endl;
     }
@@ -240,7 +245,6 @@ int Game::event(){
        window.setSize(sf::Vector2u(largeur_px,hauteur_px));
     }
     
-    actionIA();
     if(event.type == sf::Event::MouseButtonPressed){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             position=sf::Mouse::getPosition(window);
@@ -249,12 +253,22 @@ int Game::event(){
             y=position.y/taille_tile;
             if(!(c.x==x && c.y==y)){
                 int dir=calc_dir(c.x,c.y,position.x/(double)taille_tile,position.y/(double)taille_tile);
-                if(board.isMovePossiblePlayerDir(dir,p1.id)){
+                Board* test;
+                test=getChildBoardActionMoveDir(&board,0,dir);
+                if(test!=NULL){
+                    board.setDistance(0,test->getDistance(0));
+                    board.setDistance(1,test->getDistance(1));
+                    test->Delete();
+                    delete test;
                     board.moveDir(dir,p1.id);
                     p1.moveDir(dir);
                     p1.updatePosition();
+                    
                     verif(0);
                     tour=true;
+                    cout<<"tour PL"<<endl;
+                    cout<<"Joueur: "<<board.getPlayerPosition(0).x<<";"<<board.getPlayerPosition(0).y<<" -> "<<board.getDistance(0)<<endl;
+                    cout<<"IA: "<<board.getPlayerPosition(1).x<<";"<<board.getPlayerPosition(1).y<<" -> "<<board.getDistance(1)<<endl;
                 }
             }
         }
@@ -267,6 +281,8 @@ int Game::event(){
                 Board* test;
                 test=getChildBoardActionWallDir(&board,x,y,dir,0);
                 if(test!=NULL){
+                    board.setDistance(0,test->getDistance(0));
+                    board.setDistance(1,test->getDistance(1));
                     test->Delete();
                     delete test;
                     walls[nbr_wall_poser]=new Wall(taille_tile,x,y,dir,"./image/wall.png");
@@ -275,6 +291,9 @@ int Game::event(){
                     nbr_wall_poser++;
                     T_Pl.set_text("Murs Player:"+to_string(board.getRemainingWall(0)));
                     tour=true;
+                    cout<<"tour PL"<<endl;
+                    cout<<"Joueur: "<<board.getPlayerPosition(0).x<<";"<<board.getPlayerPosition(0).y<<" -> "<<board.getDistance(0)<<endl;
+                    cout<<"IA: "<<board.getPlayerPosition(1).x<<";"<<board.getPlayerPosition(1).y<<" -> "<<board.getDistance(1)<<endl;
                 }
             }
         }
