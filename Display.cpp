@@ -244,7 +244,7 @@ int Game::event(){
     if (event.type == sf::Event::Resized) {
        window.setSize(sf::Vector2u(largeur_px,hauteur_px));
     }
-    
+    actionIA();
     if(event.type == sf::Event::MouseButtonPressed){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             position=sf::Mouse::getPosition(window);
