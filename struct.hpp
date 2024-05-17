@@ -75,7 +75,7 @@ class Board{
 		//action
 		void copy(Board *board);
 		void moveTo(int x,int y,int id);
-		void moveDir(int dir,int id);
+		int moveDir(int dir,int id);
 		vector<int> possibleMoves(int x, int y);// Renvoie un vecteur contenant les bits de direction possibles pour un mouvement depuis (x,y)
 		void addOneWall(int x, int y, int bit) { getTile(x,y)->walls[bit]=true;}// Ajoute un mur sur UNE TILE
 		void addWall(int x, int y, int bit); // Ajoute le mur sur les DEUX TILES mitoyennes concernées

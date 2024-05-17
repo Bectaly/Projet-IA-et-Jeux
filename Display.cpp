@@ -97,8 +97,8 @@ void Player::setCoord(int x,int y){
     coord.setCoord(x,y);
 }
 
-void Player::moveDir(int bit){
-    coord.setCoord(coord.x+Bit[bit].x,coord.y+Bit[bit].y);
+void Player::moveDir(int bit,int saute){
+    coord.setCoord(coord.x+Bit[bit].x*saute,coord.y+Bit[bit].y*saute);
 }
 
 void Player::updatePosition() {
@@ -203,14 +203,12 @@ int Game::calc_dir(int x,int y,double xx,double yy){
 }
 
 void Game::actionIA(){
-    if(tour ){
-        
+    if(tour){
         Action * tmp=negamax(&board,difi);
         if(tmp!=NULL){ 
             tour=false;
             if(tmp->move){
-                board.moveDir(tmp->dir,1);
-                robot.moveDir(tmp->dir);
+                robot.moveDir(tmp->dir, board.moveDir(tmp->dir,1));
                 robot.updatePosition();
             }
             else{
@@ -223,9 +221,6 @@ void Game::actionIA(){
             board.setDistance(0,tmp->DPL);
             board.setDistance(1,tmp->DIA);
             verif(1);
-            cout<<"tour IA"<<endl;
-            cout<<"Joueur: "<<board.getPlayerPosition(0).x<<";"<<board.getPlayerPosition(0).y<<" -> "<<board.getDistance(0)<<endl;
-            cout<<"IA: "<<board.getPlayerPosition(1).x<<";"<<board.getPlayerPosition(1).y<<" -> "<<board.getDistance(1)<<endl;
         }
         else cout<<"erreur"<<endl;
     }
@@ -237,14 +232,13 @@ int Game::event(){
     {
         if ( event.type == sf::Event::Closed || finish){
             window.close();
-
             return 0;
         }
     }
     if (event.type == sf::Event::Resized) {
        window.setSize(sf::Vector2u(largeur_px,hauteur_px));
     }
-    
+    actionIA();
     if(event.type == sf::Event::MouseButtonPressed){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             position=sf::Mouse::getPosition(window);
@@ -260,15 +254,11 @@ int Game::event(){
                     board.setDistance(1,test->getDistance(1));
                     test->Delete();
                     delete test;
-                    board.moveDir(dir,p1.id);
-                    p1.moveDir(dir);
+                    p1.moveDir(dir,board.moveDir(dir,p1.id));
                     p1.updatePosition();
                     
                     verif(0);
                     tour=true;
-                    cout<<"tour PL"<<endl;
-                    cout<<"Joueur: "<<board.getPlayerPosition(0).x<<";"<<board.getPlayerPosition(0).y<<" -> "<<board.getDistance(0)<<endl;
-                    cout<<"IA: "<<board.getPlayerPosition(1).x<<";"<<board.getPlayerPosition(1).y<<" -> "<<board.getDistance(1)<<endl;
                 }
             }
         }
@@ -291,9 +281,6 @@ int Game::event(){
                     nbr_wall_poser++;
                     T_Pl.set_text("Murs Player:"+to_string(board.getRemainingWall(0)));
                     tour=true;
-                    cout<<"tour PL"<<endl;
-                    cout<<"Joueur: "<<board.getPlayerPosition(0).x<<";"<<board.getPlayerPosition(0).y<<" -> "<<board.getDistance(0)<<endl;
-                    cout<<"IA: "<<board.getPlayerPosition(1).x<<";"<<board.getPlayerPosition(1).y<<" -> "<<board.getDistance(1)<<endl;
                 }
             }
         }
