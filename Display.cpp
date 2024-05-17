@@ -170,8 +170,8 @@ void Game::set(sf::Font& font,int largeur,int hauteur,int nbr_wall,int difi){
     walls.resize(nbr_wall_ini*2,NULL);
     
     //set text
-    T_Pl.set("Murs Player:"+to_string(nbr_wall_ini),font,T_size,largeur_px/5,hauteur_px-T_size/2);
-    T_IA.set("Murs IA:"+to_string(nbr_wall_ini),font,T_size,largeur_px/5*4,hauteur_px-T_size/2);
+    T_Pl.set("Murs Player : "+to_string(nbr_wall_ini),font,T_size,largeur_px/5,hauteur_px-T_size/2);
+    T_IA.set("Murs IA : "+to_string(nbr_wall_ini),font,T_size,largeur_px/5*4,hauteur_px-T_size/2);
     T_fini.set("",font,70,largeur_px/2,hauteur_px/2);
     if(!tour)T_Pl.set_Color(sf::Color::Red);
     else T_IA.set_Color(sf::Color::Red);

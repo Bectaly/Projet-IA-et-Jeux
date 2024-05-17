@@ -59,6 +59,7 @@ int countMovementOptions(Board* board, int playerId) {
     return score;
 }
 
+/*
 double geHeuristicnegamax(Board* board, int id) {
     double score = 0;
     double opponentScore = 0;
@@ -111,8 +112,46 @@ double geHeuristicnegamax(Board* board, int id) {
 
     return score - opponentScore;
 }
+*/
 
+double geHeuristicnegamax(Board* board, int id) {
+    double score = 0;
+    double opponentScore = 0;
 
+    // 1. Distance jusqu'au but
+    int myDistance = board->getDistance(id);
+    int oppDistance = board->getDistance(1 - id);
+    score += (myDistance == 0) ? 10000 : -myDistance;
+    opponentScore += (oppDistance == 0) ? 10000 : -oppDistance;
+
+    // 2. Nombre de chemins ouverts et leur longueur
+    int myPaths = countMovementOptions(board, id);
+    int oppPaths = countMovementOptions(board, 1 - id);
+    score += myPaths;
+    opponentScore += oppPaths;
+
+    // 3. Capacité à bloquer l'adversaire
+    if (oppPaths < 2) {
+        opponentScore += myPaths - oppPaths;
+    }
+
+    Coord myPos = board->getPlayerPosition(id);
+    Coord oppPos = board->getPlayerPosition(1 - id);
+
+    // 5. Considérations spécifiques aux murs
+    score += board->getRemainingWall(id) * 2;
+    opponentScore += board->getRemainingWall(1 - id) * 2;
+
+    // 7. Prévoir les menaces immédiates (pas sûr que ce soit utile mais je le laisse si jamais)
+    if (board->isMovePossiblePlayer(myPos.x + 1, myPos.y, id) && board->isMovePossiblePlayer(myPos.x + 2, myPos.y, id)) {
+        score += 10;
+    }
+    if (board->isMovePossiblePlayer(oppPos.x + 1, oppPos.y, 1 - id) && board->isMovePossiblePlayer(oppPos.x + 2, oppPos.y, 1 - id)) {
+        opponentScore += 10;
+    }
+
+    return score - opponentScore;
+}
 
 vector<Coord> getSurroundingCoords(Coord pos, int width, int height, int n) {
     vector<Coord> coords;
