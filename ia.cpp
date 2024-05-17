@@ -132,7 +132,7 @@ double geHeuristicnegamax(Board* board, int id) {
 
     // 3. Capacité à bloquer l'adversaire
     if (oppPaths < 2) {
-        opponentScore += myPaths - oppPaths;
+        opponentScore -= myPaths - oppPaths;
     }
 
     Coord myPos = board->getPlayerPosition(id);
