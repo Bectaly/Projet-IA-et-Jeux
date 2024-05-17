@@ -1,5 +1,4 @@
 #include "ia.hpp"
-#include <iostream>
 
 void remplace(List& list, Item *child_p ,Item * temp){
   if(temp==NULL){
@@ -12,7 +11,6 @@ void remplace(List& list, Item *child_p ,Item * temp){
     }
   }
 }
-
 
 int getHeuristicAstar( Item *node, int id) {//calculs la distance a une possible solution
   return abs(node->board->getFinishingLine(id)-node->board->getPlayerPosition(id).x);
@@ -27,12 +25,16 @@ int Astar(Board* board,int id){
     if (evaluateBoardId(cur_node->board,id)) {
       open.clean();
       closed.clean();
+        printBoard(*board);
+        cout<<id<<" la ^^^ "<<cur_node->depth<<"\n"<<endl;
+        
+
       return cur_node->depth;
     } 
     else{
       closed.addLast(cur_node);
       for (int i =0; i < 4; i++) {
-        child_p =nextItemBoard(cur_node,getChildBoardActionMoveDir( cur_node->board,id,i));
+        child_p =nextItemBoard(cur_node,getChildBoardActionMoveDir( cur_node->board,id,i,true));
         if (child_p != NULL && closed.find(child_p->board)==NULL ) {
           child_p->g=child_p->depth;
           child_p->h=getHeuristicAstar(child_p,id);
@@ -63,7 +65,6 @@ int evaluateStrategicConfiguration(Board* board, int playerId) {
     return strategicValue;
 }
 
-
 double geHeuristicnegamax(Board* board, int id) {
     double score = 0;
     double opponentScore = 0;
@@ -74,7 +75,6 @@ double geHeuristicnegamax(Board* board, int id) {
     score += (myDistance == 0) ? 1000 : -myDistance * 10;
     opponentScore += (oppDistance == 0) ? 1000 : -oppDistance * 10;
 
-    /*
     // 2. Nombre de chemins ouverts et leur longueur
     int myPaths = countMovementOptions(board, id);
     int oppPaths = countMovementOptions(board, 1 - id);
@@ -115,7 +115,6 @@ double geHeuristicnegamax(Board* board, int id) {
     if (board->getTileWall(myPos.x, myPos.y, 1) && board->getTileWall(myPos.x + 1, myPos.y, 1)) {
         score += 20; // Bonus pour renforcer les défenses
     }
-    */
 
     return score - opponentScore;
 }
@@ -134,7 +133,6 @@ vector<Coord> getSurroundingCoords(Coord pos, int width, int height, int n) {
     }
     return coords;
 }
-
 Action* negamax(Board *board, int depth, double alpha, double beta, int id) {
     Board *child;
     Action* best = new Action;
@@ -153,6 +151,8 @@ Action* negamax(Board *board, int depth, double alpha, double beta, int id) {
                 best = trans;
                 best->move = true;
                 best->dir = i;
+                best->DIA=child->getDistance(1);
+                best->DPL=child->getDistance(0);
             }
             alpha = std::max(alpha, best->cout);
             if (alpha >= beta) {
@@ -174,6 +174,8 @@ Action* negamax(Board *board, int depth, double alpha, double beta, int id) {
                         best = trans;
                         best->move = false;
                         best->dir = j;
+                        best->DIA=child->getDistance(1);
+                        best->DPL=child->getDistance(0);
                         best->coord.setCoord(coord.x, coord.y);
                     }
                     alpha = std::max(alpha, best->cout);
