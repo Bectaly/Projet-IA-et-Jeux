@@ -82,6 +82,7 @@ class Texte: public sf::Drawable{
     public:
         void set(string str, sf::Font& font,int z,int x,int y);
         void set_text(string tex);
+        void set_Color(sf::Color color);
 };
 
 class Game{
@@ -174,7 +175,7 @@ class Menu {
         Texte T_Titre_Params,T_Largeur,T_Hauteur,T_nbrMur,T_dific;
         
 
-        int largeur=5,hauteur=5,nbrMur=int(0.07*(2*largeur*hauteur-hauteur-largeur)),dific=3;
+        int largeur=5,hauteur=5,nbrMur=int(0.07*(2*largeur*hauteur-hauteur-largeur)),dific=4;
         void updateOption();
         void isClickiOption();
         void updateMenu();

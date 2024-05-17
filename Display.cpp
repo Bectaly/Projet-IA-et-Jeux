@@ -173,6 +173,8 @@ void Game::set(sf::Font& font,int largeur,int hauteur,int nbr_wall,int difi){
     T_Pl.set("Murs Player:"+to_string(nbr_wall_ini),font,T_size,largeur_px/5,hauteur_px-T_size/2);
     T_IA.set("Murs IA:"+to_string(nbr_wall_ini),font,T_size,largeur_px/5*4,hauteur_px-T_size/2);
     T_fini.set("",font,70,largeur_px/2,hauteur_px/2);
+    if(!tour)T_Pl.set_Color(sf::Color::Red);
+    else T_IA.set_Color(sf::Color::Red);
 
 }
 
@@ -187,6 +189,7 @@ void Game::displayFini(int id){
 
 void Game::verif(int id){
     if(evaluateBoardId(&board,id)){
+        sf::sleep(sf::seconds(0.5));
         displayFini(id);
         finish=true;
     }
@@ -204,6 +207,7 @@ int Game::calc_dir(int x,int y,double xx,double yy){
 
 void Game::actionIA(){
     if(tour){
+        T_IA.set_Color(sf::Color::Red);
         Action * tmp=negamax(&board,difi);
         if(tmp!=NULL){ 
             tour=false;
@@ -223,6 +227,8 @@ void Game::actionIA(){
             verif(1);
         }
         else cout<<"erreur"<<endl;
+        T_IA.set_Color(sf::Color::White);
+        T_Pl.set_Color(sf::Color::Red);
     }
 }
 
@@ -256,7 +262,8 @@ int Game::event(){
                     delete test;
                     p1.moveDir(dir,board.moveDir(dir,p1.id));
                     p1.updatePosition();
-                    
+                    T_Pl.set_Color(sf::Color::White);
+                    T_IA.set_Color(sf::Color::Red);
                     verif(0);
                     tour=true;
                 }
@@ -280,6 +287,8 @@ int Game::event(){
                     board.addWall(x,y,dir);
                     nbr_wall_poser++;
                     T_Pl.set_text("Murs Player:"+to_string(board.getRemainingWall(0)));
+                    T_Pl.set_Color(sf::Color::White);
+                    T_IA.set_Color(sf::Color::Red);
                     tour=true;
                 }
             }
@@ -360,6 +369,9 @@ void Texte::set_text(string tex){
     text.setPosition(xx - text.getLocalBounds().width/2, yy - text.getLocalBounds().height/2 - 10);
 }
 
+void Texte::set_Color(sf::Color color){
+    text.setFillColor(color);
+}
 
 
 
