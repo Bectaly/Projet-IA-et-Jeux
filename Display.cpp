@@ -97,8 +97,8 @@ void Player::setCoord(int x,int y){
     coord.setCoord(x,y);
 }
 
-void Player::moveDir(int bit){
-    coord.setCoord(coord.x+Bit[bit].x,coord.y+Bit[bit].y);
+void Player::moveDir(int bit,int saute){
+    coord.setCoord(coord.x+Bit[bit].x*saute,coord.y+Bit[bit].y*saute);
 }
 
 void Player::updatePosition() {
@@ -173,6 +173,8 @@ void Game::set(sf::Font& font,int largeur,int hauteur,int nbr_wall,int difi){
     T_Pl.set("Murs Player:"+to_string(nbr_wall_ini),font,T_size,largeur_px/5,hauteur_px-T_size/2);
     T_IA.set("Murs IA:"+to_string(nbr_wall_ini),font,T_size,largeur_px/5*4,hauteur_px-T_size/2);
     T_fini.set("",font,70,largeur_px/2,hauteur_px/2);
+    if(!tour)T_Pl.set_Color(sf::Color::Red);
+    else T_IA.set_Color(sf::Color::Red);
 
 }
 
@@ -187,6 +189,7 @@ void Game::displayFini(int id){
 
 void Game::verif(int id){
     if(evaluateBoardId(&board,id)){
+        sf::sleep(sf::seconds(0.5));
         displayFini(id);
         finish=true;
     }
@@ -203,14 +206,13 @@ int Game::calc_dir(int x,int y,double xx,double yy){
 }
 
 void Game::actionIA(){
-    if(tour ){
-        
+    if(tour){
+        T_IA.set_Color(sf::Color::Red);
         Action * tmp=negamax(&board,difi);
         if(tmp!=NULL){ 
             tour=false;
             if(tmp->move){
-                board.moveDir(tmp->dir,1);
-                robot.moveDir(tmp->dir);
+                robot.moveDir(tmp->dir, board.moveDir(tmp->dir,1));
                 robot.updatePosition();
             }
             else{
@@ -223,11 +225,10 @@ void Game::actionIA(){
             board.setDistance(0,tmp->DPL);
             board.setDistance(1,tmp->DIA);
             verif(1);
-            cout<<"tour IA"<<endl;
-            cout<<"Joueur: "<<board.getPlayerPosition(0).x<<";"<<board.getPlayerPosition(0).y<<" -> "<<board.getDistance(0)<<endl;
-            cout<<"IA: "<<board.getPlayerPosition(1).x<<";"<<board.getPlayerPosition(1).y<<" -> "<<board.getDistance(1)<<endl;
         }
         else cout<<"erreur"<<endl;
+        T_IA.set_Color(sf::Color::White);
+        T_Pl.set_Color(sf::Color::Red);
     }
 }
 
@@ -237,14 +238,13 @@ int Game::event(){
     {
         if ( event.type == sf::Event::Closed || finish){
             window.close();
-
             return 0;
         }
     }
     if (event.type == sf::Event::Resized) {
        window.setSize(sf::Vector2u(largeur_px,hauteur_px));
     }
-    
+    actionIA();
     if(event.type == sf::Event::MouseButtonPressed){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             position=sf::Mouse::getPosition(window);
@@ -260,15 +260,12 @@ int Game::event(){
                     board.setDistance(1,test->getDistance(1));
                     test->Delete();
                     delete test;
-                    board.moveDir(dir,p1.id);
-                    p1.moveDir(dir);
+                    p1.moveDir(dir,board.moveDir(dir,p1.id));
                     p1.updatePosition();
-                    
+                    T_Pl.set_Color(sf::Color::White);
+                    T_IA.set_Color(sf::Color::Red);
                     verif(0);
                     tour=true;
-                    cout<<"tour PL"<<endl;
-                    cout<<"Joueur: "<<board.getPlayerPosition(0).x<<";"<<board.getPlayerPosition(0).y<<" -> "<<board.getDistance(0)<<endl;
-                    cout<<"IA: "<<board.getPlayerPosition(1).x<<";"<<board.getPlayerPosition(1).y<<" -> "<<board.getDistance(1)<<endl;
                 }
             }
         }
@@ -290,10 +287,9 @@ int Game::event(){
                     board.addWall(x,y,dir);
                     nbr_wall_poser++;
                     T_Pl.set_text("Murs Player:"+to_string(board.getRemainingWall(0)));
+                    T_Pl.set_Color(sf::Color::White);
+                    T_IA.set_Color(sf::Color::Red);
                     tour=true;
-                    cout<<"tour PL"<<endl;
-                    cout<<"Joueur: "<<board.getPlayerPosition(0).x<<";"<<board.getPlayerPosition(0).y<<" -> "<<board.getDistance(0)<<endl;
-                    cout<<"IA: "<<board.getPlayerPosition(1).x<<";"<<board.getPlayerPosition(1).y<<" -> "<<board.getDistance(1)<<endl;
                 }
             }
         }
@@ -373,6 +369,9 @@ void Texte::set_text(string tex){
     text.setPosition(xx - text.getLocalBounds().width/2, yy - text.getLocalBounds().height/2 - 10);
 }
 
+void Texte::set_Color(sf::Color color){
+    text.setFillColor(color);
+}
 
 
 

@@ -22,7 +22,7 @@ class Player: public sf::Drawable{
 		void init(int taille_tile,int id,sf::Color color);
         Coord getCoord(){return coord;}
         void setCoord(int x,int y);
-        void moveDir(int bit);
+        void moveDir(int bit,int saute=1);
         void updatePosition();
 };
 
@@ -82,6 +82,7 @@ class Texte: public sf::Drawable{
     public:
         void set(string str, sf::Font& font,int z,int x,int y);
         void set_text(string tex);
+        void set_Color(sf::Color color);
 };
 
 class Game{
@@ -174,7 +175,7 @@ class Menu {
         Texte T_Titre_Params,T_Largeur,T_Hauteur,T_nbrMur,T_dific;
         
 
-        int largeur=5,hauteur=5,nbrMur=int(0.07*(2*largeur*hauteur-hauteur*largeur)),dific=3;
+        int largeur=5,hauteur=5,nbrMur=int(0.07*(2*largeur*hauteur-hauteur-largeur)),dific=4;
         void updateOption();
         void isClickiOption();
         void updateMenu();
