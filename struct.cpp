@@ -93,13 +93,12 @@ bool Board::isMovePossiblePlayer(int x, int y,int id) { // Renvoie si pos (x,y) 
 bool Board::isMovePossiblePlayerDir(int bit,int id) {
 	int x=player[id].x+Bit[bit].x, y=player[id].y+Bit[bit].y;
 	if(!(x>=0 && x<width && y>=0 && y<height)) return false;
-	if(getTileId(x,y)!=-1 && !getTile(player[id].x,player[id].y)->walls[bit] && !getTile(x,y)->walls[bit]){
+	if(getTileId(x,y)!=-1 && !getTile(x,y)->walls[(bit+2)%4]){
 		x=x+Bit[bit].x;
 		y=y+Bit[bit].y;
-		if((x>=0 && x<width && y>=0 && y<height) && getTileId(x,y)==-1)return true;
+		if((x>=0 && x<width && y>=0 && y<height) && getTileId(x,y)==-1)return !getTile(x,y)->walls[(bit+2)%4];
 		return false;
 	}
-
 	return !(getTile(player[id].x, player[id].y)->walls[bit]);
 }
 
