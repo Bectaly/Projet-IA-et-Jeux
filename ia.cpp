@@ -142,7 +142,7 @@ double geHeuristicnegamax(Board* board, int id) {
     score += board->getRemainingWall(id) * 2;
     opponentScore += board->getRemainingWall(1 - id) * 2;
 
-    // 7. Prévoir les menaces immédiates (pas sûr que ce soit utile mais je le laisse si jamais)
+    // 7. Prévoir les menaces immédiates (pas sûr que ce soit utile mais je le laisse si jamais) ouai c pas ouf
     if (board->isMovePossiblePlayer(myPos.x + 1, myPos.y, id) && board->isMovePossiblePlayer(myPos.x + 2, myPos.y, id)) {
         score += 10;
     }
