@@ -121,8 +121,15 @@ double geHeuristicnegamax(Board* board, int id) {
     // 1. Distance jusqu'au but
     int myDistance = board->getDistance(id);
     int oppDistance = board->getDistance(1 - id);
+
+    /*
+    score -= myDistance;
+    opponentScore -= oppDistance;
+    */
+    
     score += (myDistance == 0) ? 10000 : -myDistance;
     opponentScore += (oppDistance == 0) ? 10000 : -oppDistance;
+    
 
     // 2. Nombre de chemins ouverts et leur longueur
     int myPaths = countMovementOptions(board, id);
