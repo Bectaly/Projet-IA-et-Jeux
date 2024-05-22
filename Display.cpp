@@ -163,8 +163,8 @@ void Game::set(sf::Font& font, int largeur, int hauteur, int nbr_wall, int difi)
     walls.resize(nbr_wall_ini * 2, NULL);
     
     // Initialisation des textes
-    T_Pl.set("Murs Player :" + to_string(nbr_wall_ini), font, T_size, largeur_px / 5, hauteur_px - T_size / 2);
-    T_IA.set("Murs IA :" + to_string(nbr_wall_ini), font, T_size, largeur_px / 5 * 4, hauteur_px - T_size / 2);
+    T_Pl.set("Murs Player : " + to_string(nbr_wall_ini), font, T_size, largeur_px / 5, hauteur_px - T_size / 2);
+    T_IA.set("Murs IA : " + to_string(nbr_wall_ini), font, T_size, largeur_px / 5 * 4, hauteur_px - T_size / 2);
     T_fini.set("", font, 70, largeur_px / 2, hauteur_px / 2);
     if (!tour)
         T_Pl.set_Color(sf::Color::Red);
@@ -221,7 +221,7 @@ void Game::actionIA() {
                 board.addWall(tmp->coord.x, tmp->coord.y, tmp->dir);
                 board.subWall(1);
                 nbr_wall_poser++;
-                T_IA.set_text("Murs IA :" + to_string(board.getRemainingWall(1)));
+                T_IA.set_text("Murs IA : " + to_string(board.getRemainingWall(1)));
             }
             board.setDistance(0, tmp->DPL);
             board.setDistance(1, tmp->DIA);
@@ -288,7 +288,7 @@ int Game::event() {
                     board.subWall(0);
                     board.addWall(x, y, dir);
                     nbr_wall_poser++;
-                    T_Pl.set_text("Murs Player :" + to_string(board.getRemainingWall(0)));
+                    T_Pl.set_text("Murs Player : " + to_string(board.getRemainingWall(0)));
                     T_Pl.set_Color(sf::Color::White);
                     T_IA.set_Color(sf::Color::Red);
                     tour = true;
