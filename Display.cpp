@@ -163,8 +163,8 @@ void Game::set(sf::Font& font, int largeur, int hauteur, int nbr_wall, int difi)
     walls.resize(nbr_wall_ini * 2, NULL);
     
     // Initialisation des textes
-    T_Pl.set("Murs Player:" + to_string(nbr_wall_ini), font, T_size, largeur_px / 5, hauteur_px - T_size / 2);
-    T_IA.set("Murs IA:" + to_string(nbr_wall_ini), font, T_size, largeur_px / 5 * 4, hauteur_px - T_size / 2);
+    T_Pl.set("Murs Player :" + to_string(nbr_wall_ini), font, T_size, largeur_px / 5, hauteur_px - T_size / 2);
+    T_IA.set("Murs IA :" + to_string(nbr_wall_ini), font, T_size, largeur_px / 5 * 4, hauteur_px - T_size / 2);
     T_fini.set("", font, 70, largeur_px / 2, hauteur_px / 2);
     if (!tour)
         T_Pl.set_Color(sf::Color::Red);
@@ -221,7 +221,7 @@ void Game::actionIA() {
                 board.addWall(tmp->coord.x, tmp->coord.y, tmp->dir);
                 board.subWall(1);
                 nbr_wall_poser++;
-                T_IA.set_text("Murs IA:" + to_string(board.getRemainingWall(1)));
+                T_IA.set_text("Murs IA :" + to_string(board.getRemainingWall(1)));
             }
             board.setDistance(0, tmp->DPL);
             board.setDistance(1, tmp->DIA);
@@ -288,7 +288,7 @@ int Game::event() {
                     board.subWall(0);
                     board.addWall(x, y, dir);
                     nbr_wall_poser++;
-                    T_Pl.set_text("Murs Player:" + to_string(board.getRemainingWall(0)));
+                    T_Pl.set_text("Murs Player :" + to_string(board.getRemainingWall(0)));
                     T_Pl.set_Color(sf::Color::White);
                     T_IA.set_Color(sf::Color::Red);
                     tour = true;
@@ -463,8 +463,8 @@ Menu::Menu(int largeurmenu, int hauteurmenu) {
         retourButton.set_bouton("Retour", font, largeur_bouton, hauteur_bouton, 110, hauteurmenu - 35);
         B_Largeur.set_bouton("Largeur", font, largeur_bouton, hauteur_bouton, largeurmenu / 5, hauteurmenu / 4);
         B_Hauteur.set_bouton("Hauteur", font, largeur_bouton, hauteur_bouton, largeurmenu / 5, int(hauteurmenu / 4 * 2.5));
-        B_nbrMur.set_bouton("Nb de murs", font, largeur_bouton, hauteur_bouton, largeurmenu / 5 * 4, hauteurmenu / 4);
-        B_dific.set_bouton("Difficulte", font, largeur_bouton, hauteur_bouton, largeurmenu / 5 * 4, int(hauteurmenu / 4 * 2.5));
+        B_nbrMur.set_bouton("Murs", font, largeur_bouton, hauteur_bouton, largeurmenu / 5 * 4, hauteurmenu / 4);
+        B_dific.set_bouton("Niveau IA", font, largeur_bouton, hauteur_bouton, largeurmenu / 5 * 4, int(hauteurmenu / 4 * 2.5));
 
         T_Largeur.set(to_string(largeur), font, hauteur_bouton - 5, largeurmenu / 5, hauteurmenu / 4 + hauteur_bouton);
         T_Hauteur.set(to_string(hauteur), font, hauteur_bouton - 5, largeurmenu / 5, int(hauteurmenu / 4 * 2.5) + hauteur_bouton);
