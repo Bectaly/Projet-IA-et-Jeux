@@ -215,7 +215,7 @@ class Menu {
         Bouton B_Largeur, B_Hauteur, B_nbrMur, B_dific; // boutons pour les paramètres
         Texte T_Titre_Params, T_Largeur, T_Hauteur, T_nbrMur, T_dific; // textes pour les paramètres
 
-        int largeur = 5, hauteur = 5, nbrMur = int(0.555 *(largeur+hauteur+0.5)), dific = 4; // paramètres par défaut
+        int largeur = 5, hauteur = 5, nbrMur = int(10/144 *(largeur+hauteur+0.5)), dific = 4; // paramètres par défaut
         void updateOption(); // Met à jour les options
         void isClickiOption(); // Gère les clics dans les options
         void updateMenu(); // Met à jour le menu
@@ -224,17 +224,6 @@ class Menu {
         void displayMenu(); // Affiche le menu
         void displayOption(); // Affiche les options
 
-<<<<<<< HEAD
-        int largeur=5,hauteur=5,nbrMur=int(0.07*(2*largeur*hauteur-hauteur-largeur)),dific=4;
-        void updateOption();
-        void isClickiOption();
-        void updateMenu();
-        void isClickiMenu();
-        void creerwindow();
-        void displayMenu();
-        void displayOption();
-=======
->>>>>>> e406bf43a2fd87392c893c653668fbf23a2dc4a3
     public:
         Menu(int largeurmenu = 800, int hauteurmenu = 600); // Constructeur/initialisation du menu
         int start(); // Démarre
