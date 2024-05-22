@@ -175,7 +175,7 @@ class Menu {
         Texte T_Titre_Params,T_Largeur,T_Hauteur,T_nbrMur,T_dific;
         
 
-        int largeur=9,hauteur=9,nbrMur=int(0.07*(2*largeur*hauteur-hauteur-largeur)),dific=2;
+        int largeur=5,hauteur=5,nbrMur=int(0.07*(2*largeur*hauteur-hauteur-largeur)),dific=4;
         void updateOption();
         void isClickiOption();
         void updateMenu();
